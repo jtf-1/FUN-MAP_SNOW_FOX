@@ -5,6 +5,21 @@ AWACS
 
 Overlord 1-1 282.025 (E3A)
 
+DCS Callsigns
+-------------
+
+VF-2 1/2/3: ENFIELD 1/2/3
+
+VFA-25 1/2/3: FORD 1/2/3
+
+VMFA-122 1/2/3: CHEVY 1/2/3
+
+VMA-231 1/2/3: DODGE 1/2/3
+
+55FS 1/2/3: UZI 1/2/3
+
+480FS 1/2/3: COLT 1/2/3
+
 NAVAL OPERATIONS
 ================
 
@@ -31,7 +46,7 @@ TANKERS
 - Shell  [KC-135] (220kt IAS), 14Y, 317.65
 - Arco [S-3B] (300kt IAS), 38Y, 276.100
 
-Aerial JTAC
+AERIAL JTAC
 ===========
 
 Pontiac-9-1 - MQ-9 Reaper Aerial Drone
