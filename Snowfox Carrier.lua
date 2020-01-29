@@ -20,6 +20,7 @@ if ( GameMode == 0 ) then
 	--////CARRIER GROUP RECOVERY TANKER
 	tankerStennis=RECOVERYTANKER:New("CVN-74 John C. Stennis", "SQ BLUE S-3B")
 	tankerStennis:SetTakeoffAir()
+	tankerStennis:SetRespawnInAir()
 	tankerStennis:SetRadio(238)
 	tankerStennis:SetTACAN(38, "ARC")
 	tankerStennis:SetCallsign(CALLSIGN.Tanker.Arco)
@@ -38,6 +39,7 @@ if ( GameMode == 0 ) then
 	--////CARRIER GROUP RESCUE HELO
 	heloStennis=RESCUEHELO:New("CVN-74 John C. Stennis", "SQ BLUE CH-53E")
 	heloStennis:SetTakeoffAir()
+	heloStennis:SetRespawnInAir()
 	heloStennis:SetModex(530)
 	heloStennis:Start()
 
