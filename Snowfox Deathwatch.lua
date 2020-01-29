@@ -7,7 +7,7 @@
 
 --////DECLARE SETS
 SET_DEATHWATCH = SET_UNIT:New():FilterPrefixes( { "SQ IRN", "SQ RUS" } ):FilterCoalitions( "red" ):FilterCountries( { "Russia", "Iran" } ):FilterStart()
-SET_RTREDBLUELAND = SET_UNIT:New():FilterPrefixes( { "RT BLUE", "RT RED", "RT AWACS", "RT TEXACO", "RT SHELL" } ):FilterCoalitions( { "blue", "red" } ):FilterStart()
+SET_RTREDBLUELAND = SET_UNIT:New():FilterPrefixes( { "RT BLUE", "RT RED", "RT AWACS", "RT TEXACO", "RT SHELL", "RT 2 TEXACO", "RT 2 SHELL" } ):FilterCoalitions( { "blue", "red" } ):FilterStart()
 SET_BLUEFIRE = SET_UNIT:New():FilterCoalitions( "blue" ):FilterStart()
 
 --////DEBUGGER TO MAKE SURE SETS ARE POPULATING, WRITES TO DCS.LOG
@@ -53,6 +53,14 @@ function SET_RTREDBLUELAND:OnEventLand(EventData)
 		trigger.action.outText("An " .. RTREDBLUETYPE .. " Has Landed At " .. RTREDBLUEPLACENAME,15)
 		Unit.getByName(RTREDBLUEPLANEUNIT):destroy()
 		SEF_BLUEShellSpawn()
+	elseif string.find(RTREDBLUEPLANEGROUP, "RT 2 TEXACO") then
+		trigger.action.outText("An " .. RTREDBLUETYPE .. " Has Landed At " .. RTREDBLUEPLACENAME,15)
+		Unit.getByName(RTREDBLUEPLANEUNIT):destroy()
+		SEF_BLUE2TexacoSpawn()
+	elseif string.find(RTREDBLUEPLANEGROUP, "RT 2 SHELL") then
+		trigger.action.outText("An " .. RTREDBLUETYPE .. " Has Landed At " .. RTREDBLUEPLACENAME,15)
+		Unit.getByName(RTREDBLUEPLANEUNIT):destroy()
+		SEF_BLUE2ShellSpawn()
 	else		
 	end	
 end

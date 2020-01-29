@@ -42,9 +42,11 @@ Tarawa LHA-1
 TANKERS
 =======
 
-- Texaco  [KC-135MPRS] (330kt IAS), 13Y, 317.775 
-- Shell  [KC-135] (220kt IAS), 14Y, 317.65
-- Arco [S-3B] (300kt IAS), 38Y, 276.100
+- Texaco 1 [KC-135MPRS] (330kt IAS), Track DP-CN, 13Y, 317.775 
+- Shell 1 [KC-135] (300kt IAS), Track DP-CN, 14Y, 317.65
+- Texaco 2 [KC-135MPRS] (330kt IAS), Track YH, 13Y, 317.875 
+- Shell 2 [KC-135] (300kt IAS),  Track YH, 14Y, 317.85
+- Arco [S-3B] (300kt IAS), STENNIS HAWK, 38Y, 276.100
 
 AERIAL JTAC
 ===========

@@ -1919,16 +1919,57 @@ function SEF_BLUEShellSpawn()
 		:Spawn()
 end
 
+function SEF_BLUE2TexacoSpawn()	--JTF-1 ADDED
+			
+	BLUE2TEXACO = SPAWN
+		:New( "RT 2 TEXACO" )
+		:InitLimit( 1, 1 )
+		:InitRandomizeTemplate( { "SQ BLUE KC-135MPRS" } )
+		
+		:OnSpawnGroup(
+			function( SpawnGroup )								
+				RTBLUE2TEXACOGROUPNAME = SpawnGroup.GroupName
+				RTBLUE2TEXACOGROUPID = Group.getByName(RTBLUE2TEXACOGROUPNAME):getID()												
+			end
+		)		
+		:Spawn()		
+end
+
+function SEF_BLUE2ShellSpawn() --JTF-1 ADDED	
+			
+	BLUE2SHELL = SPAWN
+		:New( "RT 2 SHELL" )
+		:InitLimit( 1, 1 )
+		:InitRandomizeTemplate( { "SQ BLUE KC-135" } )
+		
+		:OnSpawnGroup(
+			function( SpawnGroup )								
+				RTBLUE2SHELLGROUPNAME = SpawnGroup.GroupName
+				RTBLUE2SHELLGROUPID = Group.getByName(RTBLUE2SHELLGROUPNAME):getID()												
+			end
+		)		
+		:Spawn()
+end
+
 function SEF_BLUEAWACSRTBMessage()
 	trigger.action.outText("AWACS Is Returning To Base",60)
 end
 
 function SEF_BLUETexacoRTBMessage()
-	trigger.action.outText("Tanker Texaco Is Returning To Base",60)
+	trigger.action.outText("Tanker Texaco 1 Is Returning To Base",60)
 end
 
 function SEF_BLUEShellRTBMessage()
-	trigger.action.outText("Tanker Shell Is Returning To Base",60)
+	trigger.action.outText("Tanker Shell 1 Is Returning To Base",60)
+end
+
+
+function SEF_BLUE2TexacoRTBMessage() --JTF-1 ADDED
+	trigger.action.outText("Tanker Texaco 2 Is Returning To Base",60)
+end
+
+function SEF_BLUE2ShellRTBMessage() --JTF-1 ADDED
+	trigger.action.outText("Tanker Shell 2 Is Returning To Base",60)
 end
 
 --////End Blue Awacs/Tankers Spawn
@@ -2035,6 +2076,8 @@ end
 		SEF_BLUEAwacsSpawn()
 		SEF_BLUETexacoSpawn()
 		SEF_BLUEShellSpawn()
+		SEF_BLUE2TexacoSpawn()
+		SEF_BLUE2ShellSpawn()
 		SEF_CarrierStennisDefenceZone()
 		SEF_CarrierTarawaDefenceZone()
 		
