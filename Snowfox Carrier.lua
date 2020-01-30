@@ -41,6 +41,7 @@ if ( GameMode == 0 ) then
 	heloStennis:SetTakeoffAir()
 	heloStennis:SetRespawnInAir()
 	heloStennis:SetModex(530)
+	heloStennis:SetOffsetZ(800)
 	heloStennis:Start()
 
 	--Set Immortal/Invisible since it doesn't inherit it
@@ -72,7 +73,10 @@ else
 
 	--////CARRIER GROUP RESCUE HELO
 	heloStennis=RESCUEHELO:New("CVN-74 John C. Stennis", "SQ BLUE CH-53E")
+	heloStennis:SetTakeoffAir()
+	heloStennis:SetRespawnInAir()
 	heloStennis:SetModex(530)
+	heloStennis:SetOffsetZ(800)
 	heloStennis:Start()
 
 	--Set Immortal/Invisible since it doesn't inherit it
