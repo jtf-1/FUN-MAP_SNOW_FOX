@@ -44,8 +44,8 @@ TANKERS
 
 - Texaco 1 [KC-135MPRS] (330kt IAS), Track DP-CN, 13Y, 317.775 
 - Shell 1 [KC-135] (300kt IAS), Track DP-CN, 14Y, 317.65
-- Texaco 2 [KC-135MPRS] (330kt IAS), Track YH, 13Y, 317.875 
-- Shell 2 [KC-135] (300kt IAS),  Track YH, 14Y, 317.85
+- Texaco 2 [KC-135MPRS] (330kt IAS), Track YH, 15Y, 317.875 
+- Shell 2 [KC-135] (300kt IAS),  Track YH, 16Y, 317.85
 - Arco [S-3B] (300kt IAS), STENNIS HAWK, 38Y, 276.100
 
 AERIAL JTAC
