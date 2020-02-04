@@ -141,7 +141,7 @@ function SEF_REDDISPATCHERON()
 	REDA2ADispatcher:SetDefaultFuelThreshold( 0.15 )
 	--REDA2ADispatcher:SetDefaultDamageThreshold( 0.60 )
 	REDA2ADispatcher:SetDefaultCapLimit( 1 )
-	REDA2ADispatcher:SetDefaultTakeoffInAirAltitude(3000)
+	REDA2ADispatcher:SetDefaultTakeoffInAirAltitude(1000) --3000
 	
 	REDA2ADispatcher:SetEngageRadius( 200000 )
 	REDA2ADispatcher:SetGciRadius( 200000 )
