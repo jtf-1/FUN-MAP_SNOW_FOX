@@ -2052,7 +2052,7 @@ end
 		NumberOfCompletedMissions = 0
 		TotalScenarios = 130
 		OperationComplete = false
-		OnShotSoundsEnabled = 1
+		OnShotSoundsEnabled = 0
 		SoundLockout = 0
 		TargetSmokeLockout = 0	
 		--////MOOSE ENVIRONMENT INITIALISATION
