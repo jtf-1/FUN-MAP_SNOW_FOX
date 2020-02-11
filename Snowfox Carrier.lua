@@ -21,7 +21,7 @@ if ( GameMode == 0 ) then
 	tankerStennis=RECOVERYTANKER:New("CVN-74 John C. Stennis", "SQ BLUE S-3B")
 	tankerStennis:SetTakeoffAir()
 	tankerStennis:SetRespawnInAir()
-	tankerStennis:SetRadio(238)
+	tankerStennis:SetRadio(276.380)
 	tankerStennis:SetTACAN(38, "ARC")
 	tankerStennis:SetCallsign(CALLSIGN.Tanker.Arco)
 	tankerStennis:SetModex(380)
@@ -56,7 +56,7 @@ else
 	
 	--////CARRIER GROUP RECOVERY TANKER
 	tankerStennis=RECOVERYTANKER:New("CVN-74 John C. Stennis", "SQ BLUE S-3B")
-	tankerStennis:SetRadio(238)
+	tankerStennis:SetRadio(276.380)
 	tankerStennis:SetTACAN(38, "ARC")
 	tankerStennis:SetCallsign(CALLSIGN.Tanker.Arco)
 	tankerStennis:SetModex(380)
