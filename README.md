@@ -31,7 +31,7 @@ Stennis CVN-74
 - ICLS: Channel 4
 - Tower/Paddles 308.475 AM
 
-(Use CV TWR alt freq 289.025 to call AI Tower to reqest landing. This also activates lights at night)
+(Use CV TWR alt freq 274.075 (L BTN 1) to call AI Tower to reqest landing. This also activates lights at night)
 
 Tarawa LHA-1
 - TACAN 75X
@@ -46,7 +46,7 @@ TANKERS
 - Shell 1 [KC-135] (300kt IAS), Track DP-CN, 14Y, 317.65
 - Texaco 2 [KC-135MPRS] (330kt IAS), Track YH, 15Y, 317.875 
 - Shell 2 [KC-135] (300kt IAS),  Track YH, 16Y, 317.85
-- Arco [S-3B] (300kt IAS), STENNIS HAWK, 38Y, 276.100
+- Arco [S-3B] (300kt IAS), STENNIS HAWK, 38Y, 276.38
 
 AERIAL JTAC
 ===========
