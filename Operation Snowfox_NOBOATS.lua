@@ -1732,7 +1732,7 @@ end
 --////End Naval Functions
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 --////OVERRIDE FUNCTIONS
---[[
+
 function SEF_DisableShips()
 	
 	--SWITCH NAVAL VESSEL AI OFF
@@ -1750,7 +1750,7 @@ function SEF_DisableShips()
 	]]--
 	trigger.action.outText("Naval Vessel AI is now off", 15)
 end
---]]
+
 function SEF_ToggleFiringSounds()
 
 	if ( OnShotSoundsEnabled == 0 ) then
@@ -2089,6 +2089,6 @@ end
 		--RED BOMBER ATTACKS - WAIT 10-15 MINUTES BEFORE STARTING
 		timer.scheduleFunction(SEF_RedBomberScheduler, 53, timer.getTime() + math.random(600, 900))
 		--NAVAL DEFENCE ZONE SCANNER - WAIT 5 MINUTES BEFORE STARTING
-		timer.scheduleFunction(SEF_NavalDefenceZoneScanner, 53, timer.getTime() + 300)				
+		--timer.scheduleFunction(SEF_NavalDefenceZoneScanner, 53, timer.getTime() + 300)				
 	
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
