@@ -37,7 +37,7 @@ Tarawa LHA-1
 - TACAN 75X
 - Tower/Paddles 255.725
 
-(Use LHA TWR alt freq 278.325 to call AI Tower for landing)
+(Use LHA Deck freq 274.075 to call AI Tower for landing)
 
 TANKERS
 =======
