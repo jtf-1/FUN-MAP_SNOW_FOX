@@ -3880,8 +3880,10 @@ function SEF_RadioMenuSetup()
 	--////Snowfox Mission Options
 	SnowfoxOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Options", nil)
 	SnowfoxCAPOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox CAP Options", SnowfoxOptions)
-	SnowfoxSNDOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Sound Options", SnowfoxOptions)
-	SnowfoxBLUECAPToggle = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Allied AI CAP Flights", SnowfoxCAPOptions, function() SEF_BLUESQUADRONSTOGGLE() end, nil)	
+  SnowfoxSNDOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Sound Options", SnowfoxOptions)
+	SnowfoxBLUECAPToggle = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Allied AI CAP Flights", SnowfoxCAPOptions, function() SEF_BLUESQUADRONSTOGGLE() end, nil)
+	SnowfoxInterceptTraining = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Snowfox Spawn Intercept Training", SnowfoxOptions, function() SEF_INTERCEPT_TRAINING() end, nil)
+	SnowfoxInterceptRandom = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Snowfox Spawn Random Intercept", SnowfoxOptions, function() SEF_INTERCEPT_RANDOM() end, nil)
 	SnowfoxToggleCustomSounds = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Custom Sounds", SnowfoxSNDOptions, function() SEF_ToggleCustomSounds() end, nil)	
 	SnowfoxClearCarrierFighters  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Clear Carrier Deck Of Fighters", SnowfoxOptions, function() SEF_ClearAIFightersFromCarrierDeck() end, nil)
 	SnowfoxClearCarrierTankers  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Clear Carrier Deck Of Tankers", SnowfoxOptions, function() SEF_ClearAITankersFromCarrierDeck() end, nil)
@@ -4257,7 +4259,7 @@ function SEF_TEXACO_SPAWN()
 		env.info("TEXACO Spawned Phase 3/4", false)
   else
     TEXACO = SPAWN
-    :New( "22nd ARW TEXACO P5" )
+    :New( "22nd ARW Texaco P5" )
     :InitKeepUnitNames(true)
     :OnSpawnGroup(
       function( SpawnGroup )                
@@ -4579,7 +4581,7 @@ function SEF_BattlePhaseCheckAwacsTankers()
         Airbase.getByName(AIRBASE.PersianGulf.Sas_Al_Nakheel_Airport):getCoalition() ~= 2 or 
         Airbase.getByName(AIRBASE.PersianGulf.Sharjah_Intl):getCoalition() ~= 2 ) then
 			
-			  trigger.action.outText("Mission Objective\n\nPhase 1", 15)			  
+			  --trigger.action.outText("Mission Objective\n\nPhase 1", 15)			  
 				--Then we must be in Phase 1
 				return 1
 				
@@ -4588,7 +4590,7 @@ function SEF_BattlePhaseCheckAwacsTankers()
         Airbase.getByName(AIRBASE.PersianGulf.Fujairah_Intl):getCoalition() ~= 2 or
         Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 ) then
 				
-				trigger.action.outText("Mission Objective\n\nPhase 2", 15)        
+				--trigger.action.outText("Mission Objective\n\nPhase 2", 15)        
 				--Then we must be in Phase 2
 				return 2
 				
@@ -4599,7 +4601,7 @@ function SEF_BattlePhaseCheckAwacsTankers()
 				Airbase.getByName(AIRBASE.PersianGulf.Tunb_Island_AFB):getCoalition() ~= 2 or
 				Airbase.getByName(AIRBASE.PersianGulf.Tunb_Kochak):getCoalition() ~= 2 ) then
 	
-				trigger.action.outText("Mission Objective\n\nPhase 3", 15)
+				--trigger.action.outText("Mission Objective\n\nPhase 3", 15)
 				--Then we must be in Phase 3
 				return 3
 				
@@ -4610,7 +4612,7 @@ function SEF_BattlePhaseCheckAwacsTankers()
         Airbase.getByName(AIRBASE.PersianGulf.Lavan_Island_Airport):getCoalition() ~= 2 or    
         Airbase.getByName(AIRBASE.PersianGulf.Havadarya):getCoalition() ~= 2 ) then
 				
-				trigger.action.outText("Mission Objective\n\nPhase 4", 15)
+				--trigger.action.outText("Mission Objective\n\nPhase 4", 15)
 				--Then we must be in Phase 4
 				return 4
 				
@@ -4619,7 +4621,7 @@ function SEF_BattlePhaseCheckAwacsTankers()
         Airbase.getByName(AIRBASE.PersianGulf.Shiraz_International_Airport):getCoalition() ~= 2 or 
         Airbase.getByName(AIRBASE.PersianGulf.Kerman_Airport):getCoalition() ~= 2 ) then
         
-        trigger.action.outText("Mission Objective\n\nPhase 5", 15)
+        --trigger.action.outText("Mission Objective\n\nPhase 5", 15)
         --Then we must be in Phase 5
         return 5				
 	else

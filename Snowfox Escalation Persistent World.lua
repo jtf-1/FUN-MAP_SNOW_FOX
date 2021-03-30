@@ -223,7 +223,7 @@ else
 	StaticIntermentTableLength = 0	
 end
 
-trigger.action.outText("Persistent World Functions Have Removed "..SEFDeletedUnitCount.." Units and "..SEFDeletedStaticCount.." Static Objects", 15)
+--trigger.action.outText("Persistent World Functions Have Removed "..SEFDeletedUnitCount.." Units and "..SEFDeletedStaticCount.." Static Objects", 15)
 
 --////LOAD AIRBASES
 if file_exists("SnowfoxMkIIAirbases.lua") then

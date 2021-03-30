@@ -20,10 +20,14 @@ REDSQUADRON5GROUPNAME = ""
 BlueSquadronName1 = "USN Fighter"
 BlueSquadronName2 = "UAEAF Fighter"
 BlueSquadronName3 = "USAF Fighter"
+BlueSquadronName4 = "Zulu"
+BlueSquadronName5 = "Xray"
 
 BLUESQUADRON1GROUPNAME = ""
 BLUESQUADRON2GROUPNAME = ""
 BLUESQUADRON3GROUPNAME = ""
+BLUESQUADRON4GROUPNAME = ""
+BLUESQUADRON5GROUPNAME = ""
 
 BlueSquadronsEnabled = 1
 RedSquadronsEnabled = 1
@@ -58,6 +62,9 @@ BetaStatus = "Beta Squadron\nAirspace Is Controlled By Iran\n"
 GammaStatus = "Gamma Squadron\nAirspace Is Controlled By Iran\n"
 DeltaStatus = "Delta Squadron\nAirspace Is Controlled By Iran\n"
 EpsilonStatus = "Epsilon Squadron\nAirspace Is Controlled By Iran\n"
+ZuluStatus = "Zulu Squadron\nAirspace Is Controlled By The Allies\n"
+XrayStatus = "Xrzy Squadron\nAirspace Is Controlled By The Allies\n"
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --////TABLES
@@ -250,6 +257,26 @@ BLUESQUADRON3_DATA[1] = {
 BLUESQUADRON3_DATA[2] = {
 	TimeStamp 	= nil,
 	Vec2		= nil
+}
+
+BLUESQUADRON4_DATA = {}
+BLUESQUADRON4_DATA[1] = {
+  TimeStamp   = nil,
+  Vec2    = nil
+}
+BLUESQUADRON4_DATA[2] = {
+  TimeStamp   = nil,
+  Vec2    = nil
+}
+
+BLUESQUADRON5_DATA = {}
+BLUESQUADRON5_DATA[1] = {
+  TimeStamp   = nil,
+  Vec2    = nil
+}
+BLUESQUADRON5_DATA[2] = {
+  TimeStamp   = nil,
+  Vec2    = nil
 }
 
 USAEFCAP_DATA = {}
@@ -4553,6 +4580,1255 @@ function SEF_BLUESQUADRON3_SPAWN()
 	end
 end
 
+
+function SEF_BLUESQUADRON4_SCHEDULER()
+    
+  if ( BlueSquadronsEnabled == 1 ) then
+    if ( GROUP:FindByName(BLUESQUADRON4GROUPNAME) ~= nil and GROUP:FindByName(BLUESQUADRON4GROUPNAME):IsAlive() ) then        
+      timer.scheduleFunction(SEF_BLUESQUADRON4_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))      
+    else
+      SEF_BLUESQUADRON4_INITIALISE()
+      
+      timer.scheduleFunction(SEF_BLUESQUADRON4_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))
+    end
+  else  
+    timer.scheduleFunction(SEF_BLUESQUADRON4_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))    
+  end 
+end
+
+function SEF_BLUESQUADRON4_SPAWN(DepartureAirbaseName, DestinationAirbaseName)
+  
+  if ( GROUP:FindByName(BLUESQUADRON4GROUPNAME) ~= nil and GROUP:FindByName(BLUESQUADRON4GROUPNAME):IsAlive() ) then
+    --trigger.action.outText("Red Squadron 2 Is Currently Active, Not Spawning A Replacement Yet",15) 
+  else
+    BLUESQUADRON4_DATA[1].Vec2 = nil
+    BLUESQUADRON4_DATA[1].TimeStamp = nil
+    BLUESQUADRON4_DATA[2].Vec2 = nil
+    BLUESQUADRON4_DATA[2].TimeStamp = nil
+       
+    local SpawnZone = AIRBASE:FindByName(DepartureAirbaseName):GetZone()
+    local DestinationZone = AIRBASE:FindByName(DestinationAirbaseName):GetZone()  
+    
+    local Randomiser = math.random(BlueFlightLevelMin,BlueFlightLevelMax)
+    BS4_FlightLevel = Randomiser * 1000
+        
+    local DepartureZoneVec2 = SpawnZone:GetVec2()
+    local TargetZoneVec2  = DestinationZone:GetVec2()
+          
+    local FlightDirection = math.random(1,100)
+          
+    if ( FlightDirection <= 50 ) then     
+      --////Clockwise
+      --Spawn Point
+      BS4_WP0X = DepartureZoneVec2.x
+      BS4_WP0Y = DepartureZoneVec2.y
+      --Initial Waypoint
+      BS4_WP1X = DepartureZoneVec2.x + BluePatrolWaypointInitial
+      BS4_WP1Y = DepartureZoneVec2.y      
+      --Perimeter Zone North Point
+      BS4_WP2X = TargetZoneVec2.x + BluePatrolWaypointDistance
+      BS4_WP2Y = TargetZoneVec2.y             
+      --Perimeter Zone East Point
+      BS4_WP3X = TargetZoneVec2.x
+      BS4_WP3Y = TargetZoneVec2.y + BluePatrolWaypointDistance           
+      --Perimeter Zone South Point
+      BS4_WP4X = TargetZoneVec2.x - BluePatrolWaypointDistance
+      BS4_WP4Y = TargetZoneVec2.y           
+      --Perimeter Zone West Point
+      BS4_WP5X = TargetZoneVec2.x
+      BS4_WP5Y = TargetZoneVec2.y - BluePatrolWaypointDistance               
+    else      
+      --////Anti-Clockwise
+      --Spawn Point
+      BS4_WP0X = DepartureZoneVec2.x
+      BS4_WP0Y = DepartureZoneVec2.y
+      --Initial Waypoint
+      BS4_WP1X = DepartureZoneVec2.x - BluePatrolWaypointInitial
+      BS4_WP1Y = DepartureZoneVec2.y      
+      --Perimeter Zone South Point
+      BS4_WP2X = TargetZoneVec2.x - BluePatrolWaypointDistance
+      BS4_WP2Y = TargetZoneVec2.y             
+      --Perimeter Zone East Point
+      BS4_WP3X = TargetZoneVec2.x
+      BS4_WP3Y = TargetZoneVec2.y + BluePatrolWaypointDistance           
+      --Perimeter Zone North Point
+      BS4_WP4X = TargetZoneVec2.x + BluePatrolWaypointDistance
+      BS4_WP4Y = TargetZoneVec2.y           
+      --Perimeter Zone West Point
+      BS4_WP5X = TargetZoneVec2.x
+      BS4_WP5Y = TargetZoneVec2.y - BluePatrolWaypointDistance         
+    end   
+    
+    BLUESQUADRON4 = SPAWN:NewWithAlias("USN F/A-18C", BlueSquadronName4)
+              :InitRandomizeTemplate(CombinedBlueCAP)                 
+    
+    :OnSpawnGroup(
+      function( SpawnGroup )            
+        BLUESQUADRON4GROUPNAME = SpawnGroup.GroupName
+        BLUESQUADRON4GROUP = GROUP:FindByName(SpawnGroup.GroupName)              
+                          
+        --////CAP Mission Profile, Engage Targets Along Route Unrestricted Distance, Switch Waypoint From WP5 to WP2, 0.7Mach, Randomised Flight Level From Above Parameters
+        Mission = {
+          ["id"] = "Mission",
+          ["params"] = {    
+            ["route"] = 
+            {                                    
+              ["points"] = 
+              {
+                [1] = 
+                {
+                  ["alt"] = BS4_FlightLevel/2,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                        [1] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = true,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 1,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "EPLRS",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["groupId"] = 1,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [1]
+                        [2] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 2,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["variantIndex"] = 1,
+                                ["name"] = 5,
+                                ["formationIndex"] = 6,
+                                ["value"] = 393217,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [2]
+                        [3] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "EngageTargets",
+                          ["number"] = 3,
+                          ["params"] = 
+                          {
+                            ["targetTypes"] = 
+                            {
+                              [1] = "Air",
+                            }, -- end of ["targetTypes"]
+                            ["priority"] = 0,
+                            ["value"] = "Air;",
+                            ["noTargetTypes"] = 
+                            {
+                              [1] = "Cruise missiles",
+                              [2] = "Antiship Missiles",
+                              [3] = "AA Missiles",
+                              [4] = "AG Missiles",
+                              [5] = "SA Missiles",
+                            }, -- end of ["noTargetTypes"]
+                            ["maxDistEnabled"] = true,
+                            ["maxDist"] = EngagementDistance,
+                          }, -- end of ["params"]
+                        }, -- end of [3]
+                        [4] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 4,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = 3,
+                                ["name"] = 1,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [4]
+                        [5] = 
+                        {
+                          ["number"] = 5,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["enabled"] = true,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = 264241152,
+                                ["name"] = 10,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [5]
+                        [6] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 6,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["name"] = 19,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [6]
+                        [7] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 7,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["name"] = 6,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [7]
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 0,
+                  ["ETA_locked"] = true,
+                  ["y"] = BS4_WP0Y,
+                  ["x"] = BS4_WP0X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [1]
+                [2] = 
+                {
+                  ["alt"] = BS4_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 127.32626754758,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS4_WP1Y,
+                  ["x"] = BS4_WP1X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [2]
+                [3] = 
+                {
+                  ["alt"] = BS4_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 380.31328316984,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS4_WP2Y,
+                  ["x"] = BS4_WP2X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [3]
+                [4] = 
+                {
+                  ["alt"] = BS4_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 832.92276094724,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS4_WP3Y,
+                  ["x"] = BS4_WP3X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [4]
+                [5] = 
+                {
+                  ["alt"] = BS4_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 1289.20366255,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS4_WP4Y,
+                  ["x"] = BS4_WP4X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [5]
+                [6] = 
+                {
+                  ["alt"] = BS4_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                        [1] = 
+                        {
+                          ["number"] = 1,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["enabled"] = true,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "SwitchWaypoint",
+                              ["params"] = 
+                              {
+                                ["goToWaypointIndex"] = 3,
+                                ["fromWaypointIndex"] = 6,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [1]
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 1744.9128539618,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS4_WP5Y,
+                  ["x"] = BS4_WP5X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [6]
+              }, -- end of ["points"]
+            }, -- end of ["route"]
+          }, --end of ["params"]
+        }--end of Mission       
+        BLUESQUADRON4GROUP:SetTask(Mission)        
+      end
+    )
+    if ( DepartureAirbaseName == AIRBASE.PersianGulf.Khasab ) then
+      BLUESQUADRON4:SpawnAtParkingSpot(AIRBASE:FindByName(AIRBASE.PersianGulf.Khasab), {4,5,2,3}, SPAWN.Takeoff.Hot)
+    else
+      BLUESQUADRON4:SpawnAtAirbase( AIRBASE:FindByName( DepartureAirbaseName ), SPAWN.Takeoff.Hot )
+    end   
+    --:SpawnInZone( SpawnZone, false, BS4_FlightLevel, BS4_FlightLevel )
+    --:SpawnAtAirbase( AIRBASE:FindByName( DepartureAirbaseName ), SPAWN.Takeoff.Hot ) --SPAWN.Takeoff.Hot SPAWN.Takeoff.Cold SPAWN.Takeoff.Runway
+    --trigger.action.outText("Blue Squadron 4 Is Launching Fighters", 15)  
+  end
+end
+
+function SEF_BLUESQUADRON4_INITIALISE()
+
+  --Retrieve The Standard Deployment For The Squadron
+  SEF_BLUESQUADRON4_DEPLOYMENT()
+  
+  SET_AIRFIELDPERIMETERCLIENTS = SET_CLIENT:New():FilterCoalitions("red"):FilterCategories( { "plane", "helicopter" } ):FilterActive():FilterOnce()
+  
+  ZuluPrimaryPerimeterCount = 0     
+      
+  --Zulu
+  SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(ZuluPrimaryAirbase.." Perimeter Zone"), function ( GroupObject )
+    ZuluPrimaryPerimeterCount = ZuluPrimaryPerimeterCount + 1
+    end
+  ) 
+  
+  --////Zulu
+  if ( ZuluPrimaryPerimeterCount > 0 ) then   
+    ZuluStatus = ZuluPrimaryAirbase.." - Zulu Squadron\nAirspace Is Being Contested By Iran\n"
+    
+    --Ras Al Khaimah Intl -> Khasab -> Qeshm Island -> Havadarya -> Lar
+
+    if ( ZuluPrimaryAirbase == AIRBASE.PersianGulf.Qeshm_Island ) then
+      
+      KhasabPerimeterCount = 0
+      RasPerimeterCount = 0
+      MinhadPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Khasab.." Perimeter Zone"), function ( GroupObject )
+        KhasabPerimeterCount = KhasabPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Ras_Al_Khaimah.." Perimeter Zone"), function ( GroupObject )
+        RasPerimeterCount = RasPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Al_Minhad_AB.." Perimeter Zone"), function ( GroupObject )
+        MinhadPerimeterCount = MinhadPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and KhasabPerimeterCount == 0 ) then             
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Khasab, ZuluDestinationAirbase)  
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and RasPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Ras_Al_Khaimah, ZuluDestinationAirbase)            
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and MinhadPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Minhad_AB, ZuluDestinationAirbase)     
+      else      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase)
+      end     
+    elseif ( ZuluPrimaryAirbase == AIRBASE.PersianGulf.Khasab ) then
+    
+      RasPerimeterCount = 0
+      QeshmPerimeterCount = 0
+      MinhadPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Qeshm_Island.." Perimeter Zone"), function ( GroupObject )
+        QeshmPerimeterCount = QeshmPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Ras_Al_Khaimah.." Perimeter Zone"), function ( GroupObject )
+        RasPerimeterCount = RasPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Al_Minhad_AB.." Perimeter Zone"), function ( GroupObject )
+        MinhadPerimeterCount = MinhadPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 and QeshmPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Qeshm_Island, ZuluDestinationAirbase)
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and RasPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Ras_Al_Khaimah, ZuluDestinationAirbase)
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and MinhadPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Minhad_AB, ZuluDestinationAirbase)
+      else      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase)
+      end   
+    elseif ( ZuluPrimaryAirbase == AIRBASE.PersianGulf.Ras_Al_Khaimah ) then
+    
+      QeshmPerimeterCount = 0
+      KhasabPerimeterCount = 0
+      MinhadPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Qeshm_Island.." Perimeter Zone"), function ( GroupObject )
+        QeshmPerimeterCount = QeshmPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Khasab.." Perimeter Zone"), function ( GroupObject )
+        KhasabPerimeterCount = KhasabPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Al_Minhad_AB.." Perimeter Zone"), function ( GroupObject )
+        MinhadPerimeterCount = MinhadPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 and QeshmPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Qeshm_Island, ZuluDestinationAirbase)      
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and KhasabPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Khasab, ZuluDestinationAirbase)    
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and MinhadPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Minhad_AB, ZuluDestinationAirbase)     
+      else      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase)       
+      end   
+    elseif ( ZuluPrimaryAirbase == AIRBASE.PersianGulf.Al_Minhad_AB ) then
+      
+      QeshmPerimeterCount = 0
+      KhasabPerimeterCount = 0
+      RasPerimeterCount = 0
+            
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Qeshm_Island.." Perimeter Zone"), function ( GroupObject )
+        QeshmPerimeterCount = QeshmPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Khasab.." Perimeter Zone"), function ( GroupObject )
+        KhasabPerimeterCount = KhasabPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Ras_Al_Khaimah.." Perimeter Zone"), function ( GroupObject )
+        RasPerimeterCount = RasPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 and QeshmPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Qeshm_Island, ZuluDestinationAirbase)        
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and KhasabPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Khasab, ZuluDestinationAirbase)            
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and RasPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Ras_Al_Khaimah, ZuluDestinationAirbase)      
+      else      
+        SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase)       
+      end   
+    elseif ( ZuluPrimaryAirbase == AAIRBASE.PersianGulf.Al_Dhafra_AB ) then
+      SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase) 
+    else      
+      SEF_BLUESQUADRON4_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, ZuluDestinationAirbase)
+    end   
+  else
+    ZuluStatus = ZuluPrimaryAirbase.." - Zulu Squadron\nAirspace Is Controlled By Iran\n"
+    SEF_BLUESQUADRON4_SPAWN(ZuluPrimaryAirbase, ZuluDestinationAirbase)  
+  end 
+end
+
+function SEF_BLUESQUADRON4_DEPLOYMENT()
+  
+  --Zulu
+  if ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Ras Al Khaimah Intl
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Khasab
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Qeshm_Island 
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Khasab And Patrol Ras Al Khaimah Intl
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Khasab 
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Khasab 
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Ras Al Khaimah Intl And Patrol Ras Al Khaimah Intl And Leave Khasab For Delta To Patrol
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Khasab
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Qeshm And Patrol Khasab, Delta Will Be Doing The Same Here
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Ras Al Khaimah Intl, Patrol Ras Al Khaimah Intl And Leave Qeshm For Delta
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Khasab, Patrol Ras Al Khaimah Intl And Leave Qeshm For Delta
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Ras Al Khaimah Intl, Patrol Ras Al Khaimah Intl And Leave Qeshm And Khasab For Delta
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Havadarya, Patrol Qeshm
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Qeshm, Patrol Havadarya
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Qeshm, Patrol Havadarya
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() == 2 ) then
+    --Set Zulu To Qeshm, Patrol Havadarya
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Al_Minhad_AB):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 2 ) then
+    --Set Zulu To Qeshm, Patrol Havadarya
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Ras_Al_Khaimah
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+  else
+    --Set Zulu To Lar As We've Lost Both Havadarya And Qeshm, We're On The Defensive
+    ZuluPrimaryAirbase = AIRBASE.PersianGulf.Al_Dhafra_AB
+    ZuluDestinationAirbase = AIRBASE.PersianGulf.Al_Minhad_AB
+  end
+end
+
+
+
+
+function SEF_BLUESQUADRON5_SCHEDULER()
+    
+  if ( BlueSquadronsEnabled == 1 ) then
+    if ( GROUP:FindByName(BLUESQUADRON5GROUPNAME) ~= nil and GROUP:FindByName(BLUESQUADRON5GROUPNAME):IsAlive() ) then        
+      timer.scheduleFunction(SEF_BLUESQUADRON5_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))      
+    else
+      SEF_BLUESQUADRON5_INITIALISE()
+      
+      timer.scheduleFunction(SEF_BLUESQUADRON5_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))
+    end
+  else  
+    timer.scheduleFunction(SEF_BLUESQUADRON5_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerMin, BlueRespawnTimerMax))    
+  end 
+end
+
+function SEF_BLUESQUADRON5_SPAWN(DepartureAirbaseName, DestinationAirbaseName)
+  
+  if ( GROUP:FindByName(BLUESQUADRON5GROUPNAME) ~= nil and GROUP:FindByName(BLUESQUADRON5GROUPNAME):IsAlive() ) then
+    --trigger.action.outText("Red Squadron 2 Is Currently Active, Not Spawning A Replacement Yet",15) 
+  else
+    BLUESQUADRON5_DATA[1].Vec2 = nil
+    BLUESQUADRON5_DATA[1].TimeStamp = nil
+    BLUESQUADRON5_DATA[2].Vec2 = nil
+    BLUESQUADRON5_DATA[2].TimeStamp = nil
+       
+    local SpawnZone = AIRBASE:FindByName(DepartureAirbaseName):GetZone()
+    local DestinationZone = AIRBASE:FindByName(DestinationAirbaseName):GetZone()  
+    
+    local Randomiser = math.random(BlueFlightLevelMin,BlueFlightLevelMax)
+    BS5_FlightLevel = Randomiser * 1000
+        
+    local DepartureZoneVec2 = SpawnZone:GetVec2()
+    local TargetZoneVec2  = DestinationZone:GetVec2()
+          
+    local FlightDirection = math.random(1,100)
+          
+    if ( FlightDirection <= 50 ) then     
+      --////Clockwise
+      --Spawn Point
+      BS5_WP0X = DepartureZoneVec2.x
+      BS5_WP0Y = DepartureZoneVec2.y
+      --Initial Waypoint
+      BS5_WP1X = DepartureZoneVec2.x + BluePatrolWaypointInitial
+      BS5_WP1Y = DepartureZoneVec2.y      
+      --Perimeter Zone North Point
+      BS5_WP2X = TargetZoneVec2.x + BluePatrolWaypointDistance
+      BS5_WP2Y = TargetZoneVec2.y             
+      --Perimeter Zone East Point
+      BS5_WP3X = TargetZoneVec2.x
+      BS5_WP3Y = TargetZoneVec2.y + BluePatrolWaypointDistance           
+      --Perimeter Zone South Point
+      BS5_WP4X = TargetZoneVec2.x - BluePatrolWaypointDistance
+      BS5_WP4Y = TargetZoneVec2.y           
+      --Perimeter Zone West Point
+      BS5_WP5X = TargetZoneVec2.x
+      BS5_WP5Y = TargetZoneVec2.y - BluePatrolWaypointDistance               
+    else      
+      --////Anti-Clockwise
+      --Spawn Point
+      BS5_WP0X = DepartureZoneVec2.x
+      BS5_WP0Y = DepartureZoneVec2.y
+      --Initial Waypoint
+      BS5_WP1X = DepartureZoneVec2.x - BluePatrolWaypointInitial
+      BS5_WP1Y = DepartureZoneVec2.y      
+      --Perimeter Zone South Point
+      BS5_WP2X = TargetZoneVec2.x - BluePatrolWaypointDistance
+      BS5_WP2Y = TargetZoneVec2.y             
+      --Perimeter Zone East Point
+      BS5_WP3X = TargetZoneVec2.x
+      BS5_WP3Y = TargetZoneVec2.y + BluePatrolWaypointDistance           
+      --Perimeter Zone North Point
+      BS5_WP4X = TargetZoneVec2.x + BluePatrolWaypointDistance
+      BS5_WP4Y = TargetZoneVec2.y           
+      --Perimeter Zone West Point
+      BS5_WP5X = TargetZoneVec2.x
+      BS5_WP5Y = TargetZoneVec2.y - BluePatrolWaypointDistance         
+    end   
+    
+    BLUESQUADRON5 = SPAWN:NewWithAlias("USN F-14B", BlueSquadronName5)
+              :InitRandomizeTemplate(CombinedBlueCAP)                 
+    
+    :OnSpawnGroup(
+      function( SpawnGroup )            
+        BLUESQUADRON5GROUPNAME = SpawnGroup.GroupName
+        BLUESQUADRON5GROUP = GROUP:FindByName(SpawnGroup.GroupName)              
+                          
+        --////CAP Mission Profile, Engage Targets Along Route Unrestricted Distance, Switch Waypoint From WP5 to WP2, 0.7Mach, Randomised Flight Level From Above Parameters
+        Mission = {
+          ["id"] = "Mission",
+          ["params"] = {    
+            ["route"] = 
+            {                                    
+              ["points"] = 
+              {
+                [1] = 
+                {
+                  ["alt"] = BS5_FlightLevel/2,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                        [1] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = true,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 1,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "EPLRS",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["groupId"] = 1,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [1]
+                        [2] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 2,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["variantIndex"] = 1,
+                                ["name"] = 5,
+                                ["formationIndex"] = 6,
+                                ["value"] = 393217,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [2]
+                        [3] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "EngageTargets",
+                          ["number"] = 3,
+                          ["params"] = 
+                          {
+                            ["targetTypes"] = 
+                            {
+                              [1] = "Air",
+                            }, -- end of ["targetTypes"]
+                            ["priority"] = 0,
+                            ["value"] = "Air;",
+                            ["noTargetTypes"] = 
+                            {
+                              [1] = "Cruise missiles",
+                              [2] = "Antiship Missiles",
+                              [3] = "AA Missiles",
+                              [4] = "AG Missiles",
+                              [5] = "SA Missiles",
+                            }, -- end of ["noTargetTypes"]
+                            ["maxDistEnabled"] = true,
+                            ["maxDist"] = EngagementDistance,
+                          }, -- end of ["params"]
+                        }, -- end of [3]
+                        [4] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 4,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = 3,
+                                ["name"] = 1,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [4]
+                        [5] = 
+                        {
+                          ["number"] = 5,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["enabled"] = true,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = 264241152,
+                                ["name"] = 10,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [5]
+                        [6] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 6,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["name"] = 19,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [6]
+                        [7] = 
+                        {
+                          ["enabled"] = true,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["number"] = 7,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "Option",
+                              ["params"] = 
+                              {
+                                ["value"] = true,
+                                ["name"] = 6,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [7]
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 0,
+                  ["ETA_locked"] = true,
+                  ["y"] = BS5_WP0Y,
+                  ["x"] = BS5_WP0X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [1]
+                [2] = 
+                {
+                  ["alt"] = BS5_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 127.32626754758,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS5_WP1Y,
+                  ["x"] = BS5_WP1X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [2]
+                [3] = 
+                {
+                  ["alt"] = BS5_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 380.31328316984,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS5_WP2Y,
+                  ["x"] = BS5_WP2X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [3]
+                [4] = 
+                {
+                  ["alt"] = BS5_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 832.92276094724,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS5_WP3Y,
+                  ["x"] = BS5_WP3X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [4]
+                [5] = 
+                {
+                  ["alt"] = BS5_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 1289.20366255,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS5_WP4Y,
+                  ["x"] = BS5_WP4X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [5]
+                [6] = 
+                {
+                  ["alt"] = BS5_FlightLevel,
+                  ["action"] = "Turning Point",
+                  ["alt_type"] = "BARO",
+                  ["speed"] = 234.32754852983,
+                  ["task"] = 
+                  {
+                    ["id"] = "ComboTask",
+                    ["params"] = 
+                    {
+                      ["tasks"] = 
+                      {
+                        [1] = 
+                        {
+                          ["number"] = 1,
+                          ["auto"] = false,
+                          ["id"] = "WrappedAction",
+                          ["enabled"] = true,
+                          ["params"] = 
+                          {
+                            ["action"] = 
+                            {
+                              ["id"] = "SwitchWaypoint",
+                              ["params"] = 
+                              {
+                                ["goToWaypointIndex"] = 3,
+                                ["fromWaypointIndex"] = 6,
+                              }, -- end of ["params"]
+                            }, -- end of ["action"]
+                          }, -- end of ["params"]
+                        }, -- end of [1]
+                      }, -- end of ["tasks"]
+                    }, -- end of ["params"]
+                  }, -- end of ["task"]
+                  ["type"] = "Turning Point",
+                  ["ETA"] = 1744.9128539618,
+                  ["ETA_locked"] = false,
+                  ["y"] = BS5_WP5Y,
+                  ["x"] = BS5_WP5X,
+                  ["formation_template"] = "",
+                  ["speed_locked"] = true,
+                }, -- end of [6]
+              }, -- end of ["points"]
+            }, -- end of ["route"]
+          }, --end of ["params"]
+        }--end of Mission       
+        BLUESQUADRON5GROUP:SetTask(Mission)        
+      end
+    )
+    if ( DepartureAirbaseName == AIRBASE.PersianGulf.Kish_International_Airport ) then
+      --BLUESQUADRON5:SpawnAtParkingSpot(AIRBASE:FindByName(AIRBASE.PersianGulf.Kish_International_Airport), {4,5,2,3}, SPAWN.Takeoff.Hot)
+      BLUESQUADRON5:SpawnAtAirbase( AIRBASE:FindByName( DepartureAirbaseName ), SPAWN.Takeoff.Hot )
+      
+    else
+      BLUESQUADRON5:SpawnAtAirbase( AIRBASE:FindByName( DepartureAirbaseName ), SPAWN.Takeoff.Hot )
+    end   
+    --:SpawnInZone( SpawnZone, false, BS5_FlightLevel, BS5_FlightLevel )
+    --:SpawnAtAirbase( AIRBASE:FindByName( DepartureAirbaseName ), SPAWN.Takeoff.Hot ) --SPAWN.Takeoff.Hot SPAWN.Takeoff.Cold SPAWN.Takeoff.Runway
+    --trigger.action.outText("Blue Squadron 4 Is Launching Fighters", 15)  
+  end
+end
+
+function SEF_BLUESQUADRON5_INITIALISE()
+
+  --Retrieve The Standard Deployment For The Squadron
+  SEF_BLUESQUADRON5_DEPLOYMENT()
+  
+  SET_AIRFIELDPERIMETERCLIENTS = SET_CLIENT:New():FilterCoalitions("red"):FilterCategories( { "plane", "helicopter" } ):FilterActive():FilterOnce()
+  
+  XrayPrimaryPerimeterCount = 0     
+      
+  --Xray
+  SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(XrayPrimaryAirbase.." Perimeter Zone"), function ( GroupObject )
+    XrayPrimaryPerimeterCount = XrayPrimaryPerimeterCount + 1
+    end
+  ) 
+  
+  --////Xray
+  if ( XrayPrimaryPerimeterCount > 0 ) then   
+    XrayStatus = XrayPrimaryAirbase.." - Xray Squadron\nAirspace Is Being Contested By Iran\n"
+    
+    --Ras Al Khaimah Intl -> Khasab -> Qeshm Island -> Havadarya -> Lar
+
+    if ( XrayPrimaryAirbase == AIRBASE.PersianGulf.Lar_Airbase ) then
+      
+      KishPerimeterCount = 0
+      SirriPerimeterCount = 0
+      LiwaPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Kish_International_Airport.." Perimeter Zone"), function ( GroupObject )
+        KishPerimeterCount = KishPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Sirri_Island.." Perimeter Zone"), function ( GroupObject )
+        SirriPerimeterCount = SirriPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Liwa_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LiwaPerimeterCount = LiwaPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and KishPerimeterCount == 0 ) then             
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Kish_International_Airport, XrayDestinationAirbase)  
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and SirriPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Sirri_Island, XrayDestinationAirbase)            
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and LiwaPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Liwa_Airbase, XrayDestinationAirbase)     
+      else      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase)
+      end     
+    elseif ( XrayPrimaryAirbase == AIRBASE.PersianGulf.Kish_International_Airport ) then
+    
+      LarPerimeterCount = 0
+      SirriPerimeterCount = 0
+      LiwaPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Lar_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LarPerimeterCount = LarPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Sirri_Island.." Perimeter Zone"), function ( GroupObject )
+        SirriPerimeterCount = SirriPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Liwa_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LiwaPerimeterCount = LiwaPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 and LarPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Lar_Airbase, XrayDestinationAirbase)
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and SirriPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Sirri_Island, XrayDestinationAirbase)
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and LiwaPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Liwa_Airbase, XrayDestinationAirbase)
+      else      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase)
+      end   
+    elseif ( XrayPrimaryAirbase == AIRBASE.PersianGulf.Sirri_Island ) then
+    
+      LarPerimeterCount = 0
+      KishPerimeterCount = 0
+      LiwaPerimeterCount = 0
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Lar_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LarPerimeterCount = LarPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Kish_International_Airport.." Perimeter Zone"), function ( GroupObject )
+        KishPerimeterCount = KishPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Liwa_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LiwaPerimeterCount = LiwaPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 and LarPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Lar_Airbase, XrayDestinationAirbase)      
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and KishPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Kish_International_Airport, XrayDestinationAirbase)    
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and LiwaPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Liwa_Airbase, XrayDestinationAirbase)     
+      else      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase)       
+      end   
+    elseif ( XrayPrimaryAirbase == AIRBASE.PersianGulf.Liwa_Airbase ) then
+      
+      LarPerimeterCount = 0
+      KishPerimeterCount = 0
+      SirriPerimeterCount = 0
+            
+          
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Lar_Airbase.." Perimeter Zone"), function ( GroupObject )
+        LarPerimeterCount = LarPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Kish_International_Airport.." Perimeter Zone"), function ( GroupObject )
+        KishPerimeterCount = KishPerimeterCount + 1   
+        end
+      )
+      SET_AIRFIELDPERIMETERCLIENTS:ForEachClientInZone(ZONE:FindByName(AIRBASE.PersianGulf.Sirri_Island.." Perimeter Zone"), function ( GroupObject )
+        SirriPerimeterCount = SirriPerimeterCount + 1   
+        end
+      )   
+
+      if ( Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 and LarPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Lar_Airbase, XrayDestinationAirbase)        
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and KishPerimeterCount == 0 ) then     
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Kish_International_Airport, XrayDestinationAirbase)            
+      elseif ( Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and SirriPerimeterCount == 0 ) then      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Sirri_Island, XrayDestinationAirbase)      
+      else      
+        SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase)       
+      end   
+    elseif ( XrayPrimaryAirbase == AAIRBASE.PersianGulf.Al_Dhafra_AB ) then
+      SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase) 
+    else      
+      SEF_BLUESQUADRON5_SPAWN(AIRBASE.PersianGulf.Al_Dhafra_AB, XrayDestinationAirbase)
+    end   
+  else
+    XrayStatus = XrayPrimaryAirbase.." - Xray Squadron\nAirspace Is Controlled By Iran\n"
+    SEF_BLUESQUADRON5_SPAWN(XrayPrimaryAirbase, XrayDestinationAirbase)  
+  end 
+end
+
+function SEF_BLUESQUADRON5_DEPLOYMENT()
+  
+  --Xray
+  if ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Ras Al Khaimah Intl
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Kish_International_Airport
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Lar_Airbase 
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Khasab And Patrol Ras Al Khaimah Intl
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Kish_International_Airport 
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Kish_International_Airport 
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Ras Al Khaimah Intl And Patrol Ras Al Khaimah Intl And Leave Khasab For Delta To Patrol
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Kish_International_Airport
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Qeshm And Patrol Khasab, Delta Will Be Doing The Same Here
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Sirri_Island
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Ras Al Khaimah Intl, Patrol Ras Al Khaimah Intl And Leave Qeshm For Delta
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Sirri_Island
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Khasab, Patrol Ras Al Khaimah Intl And Leave Qeshm For Delta
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Sirri_Island
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Ras Al Khaimah Intl, Patrol Ras Al Khaimah Intl And Leave Qeshm And Khasab For Delta
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Sirri_Island
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Havadarya, Patrol Qeshm
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Qeshm, Patrol Havadarya
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Qeshm, Patrol Havadarya
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 2 ) then
+    --Set Xray To Qeshm, Patrol Havadarya
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Liwa_Airbase):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Sirri_Island):getCoalition() == 2 and Airbase.getByName(AIRBASE.PersianGulf.Kish_International_Airport):getCoalition() ~= 2 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() ~= 2 ) then
+    --Set Xray To Qeshm, Patrol Havadarya
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Sirri_Island
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  else
+    --Set Xray To Lar As We've Lost Both Havadarya And Qeshm, We're On The Defensive
+    XrayPrimaryAirbase = AIRBASE.PersianGulf.Al_Dhafra_AB
+    XrayDestinationAirbase = AIRBASE.PersianGulf.Liwa_Airbase
+  end
+end
+
+
+
+
 function SEF_ClearAIFightersFromCarrierDeck()
 	if ( GROUP:FindByName(BLUESQUADRON1GROUPNAME) ~= nil and GROUP:FindByName(BLUESQUADRON1GROUPNAME):IsAlive() ) then
 		Group.getByName(BLUESQUADRON1GROUPNAME):destroy()
@@ -4584,6 +5860,9 @@ timer.scheduleFunction(SEF_REDSQUADRON5_SCHEDULER, nil, timer.getTime() + math.r
 timer.scheduleFunction(SEF_BLUESQUADRON1_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerInitialMin, BlueRespawnTimerInitialMax))
 timer.scheduleFunction(SEF_BLUESQUADRON2_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerInitialMin, BlueRespawnTimerInitialMax))
 timer.scheduleFunction(SEF_BLUESQUADRON3_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerInitialMin, BlueRespawnTimerInitialMax))
+timer.scheduleFunction(SEF_BLUESQUADRON4_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerInitialMin, BlueRespawnTimerInitialMax))
+timer.scheduleFunction(SEF_BLUESQUADRON5_SCHEDULER, nil, timer.getTime() + math.random(BlueRespawnTimerInitialMin, BlueRespawnTimerInitialMax))
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 env.info("Airforce Complete", false)

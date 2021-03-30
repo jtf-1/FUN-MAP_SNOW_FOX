@@ -2415,7 +2415,7 @@ end
 --////LOAD CONSTRUCTED ITEMS
 if file_exists("SnowfoxMkIIConstructions.lua") then	
 	
-	trigger.action.outText("Requisitioning Previously Constructed Items",15)
+	--trigger.action.outText("Requisitioning Previously Constructed Items",15)
 	
 	dofile("SnowfoxMkIIConstructions.lua")
 	
