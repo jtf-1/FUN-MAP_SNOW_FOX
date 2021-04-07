@@ -34,18 +34,18 @@ RedSquadronsEnabled = 1
 
 BlueRespawnTimerInitialMin = 30
 BlueRespawnTimerInitialMax = 60
-RedRespawnTimerInitialMin = 300
-RedRespawnTimerInitialMax = 450
+RedRespawnTimerInitialMin = 150
+RedRespawnTimerInitialMax = 300
 
-BlueRespawnTimerMin = 600
-BlueRespawnTimerMax = 1200
+BlueRespawnTimerMin = 300
+BlueRespawnTimerMax = 900
 RedRespawnTimerMin  = 900
 RedRespawnTimerMax  = 1500
 
-RedFlightLevelMin = 4
-RedFlightLevelMax = 11
-BlueFlightLevelMin = 4
-BlueFlightLevelMax = 11
+RedFlightLevelMin = 5
+RedFlightLevelMax = 13
+BlueFlightLevelMin = 5
+BlueFlightLevelMax = 13
 
 RedPatrolWaypointDistance = 46300
 RedPatrolWaypointInitial = 18520
@@ -115,7 +115,8 @@ VVSAirForcesCAP  = { "VVS MiG-21Bis",
 					 "VVS MiG-25PD",					 
 					 "VVS Su-27", 
 					 "VVS Su-30", 
-					 "VVS Su-33",	
+					 "VVS Su-33",
+           "VVS JF-17", 				 	
 					 "VVS MiG-31" }					 
 
 --////MiG-31 or F-14A ~13.3% Chance
@@ -147,7 +148,7 @@ KhasabRedCAP 	 = {
 					"VVS MiG-29S", 
 					"VVS MiG-23MLD", 
 					"VVS MiG-25PD", 
-					"VVS MiG-31", 
+					"VVS MiG-31",
 					--"VVS Su-27", 
 					--"VVS Su-30", 
 					--"VVS Su-33",

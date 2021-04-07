@@ -80,8 +80,8 @@ USAFNavyAdmiralName			= "Admiral Michael Gilday"
 
 BlueStrikeFrequencyMin 	= 1200	
 BlueStrikeFrequencyMax 	= 2400	
-RedStrikeFrequencyMin 	= 1200	
-RedStrikeFrequencyMax 	= 2400
+RedStrikeFrequencyMin 	= 10800	
+RedStrikeFrequencyMax 	= 18000
 
 IRIAFC130GROUPNAME = ""
 IRIAFMI8GROUPNAME = ""

@@ -101,4 +101,16 @@ blueIADS:getSAMSitesByNatoName('Hawk str'):setEngagementZone(SkynetIADSAbstractR
 
 blueIADS:activate()    
 
+
+function SEF_addIADS ()
+  env.info("Adding Respawns to IADS", false)
+  bBASECAP=SET_GROUP:New():FilterPrefixes("bSAM-BASECAP#"):FilterActive(true):FilterOnce()
+  All=SET_GROUP:New():FilterActive(true):FilterStart()
+  blueIADS:addSAMSitesByPrefix('bSAM')
+  env.info("Respawns integrated into IADS", false)
+  end
+
+timer.scheduleFunction(SEF_addIADS, nil, timer.getTime() + 75)
+
+
 env.info("Blue IADS Complete", false)

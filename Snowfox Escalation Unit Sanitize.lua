@@ -1,9 +1,9 @@
 env.info("Unit Sanitize Starting", false)
 
-BlueBase=SET_GROUP:New():FilterPrefixes("bSAM-BASECAP"):FilterActive(true):FilterOnce()
-RedBase=SET_GROUP:New():FilterPrefixes("rSAM-BASECAP"):FilterActive(true):FilterOnce()
-DownedPilot=SET_GROUP:New():FilterPrefixes("Downed Pilot"):FilterActive(true):FilterOnce()
-Crates=SET_GROUP:New():FilterPrefixes("Cargo Static Group"):FilterActive(true):FilterOnce()
+BlueBase=SET_GROUP:New():FilterPrefixes("bSAM-BASECAP#"):FilterOnce()
+RedBase=SET_GROUP:New():FilterPrefixes("rSAM-BASECAP#"):FilterOnce()
+DownedPilot=SET_GROUP:New():FilterPrefixes("Downed Pilot"):FilterOnce()
+Crates=SET_GROUP:New():FilterPrefixes("Cargo Static Group"):FilterOnce()
 
 
 All=SET_GROUP:New():FilterActive(true):FilterStart()

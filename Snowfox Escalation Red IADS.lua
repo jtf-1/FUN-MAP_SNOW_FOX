@@ -1,6 +1,6 @@
 env.info("Red IADS Loading", false)
 
-
+--[[
 --assert(loadfile("F:\\_Google Drive\\DCS Missions\\SydADF2012.lua"))()
 --SA6 % availability - 100% is full complement
 --SA2 % availability
@@ -167,7 +167,7 @@ local EWRtoDestroy = EWRcount - EWRtoKeep
 
   end
 --end 
-
+]]--
 -----------------
 -- REDFOR IADS --
 -----------------
