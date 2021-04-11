@@ -1,4 +1,5 @@
 env.info("Blue IADS Loading", false)
+--[[
 
 --Editable part v
 local bPatriotpc = 100
@@ -97,20 +98,28 @@ blueIADS:addEarlyWarningRadarsByPrefix('bEWR')
 blueIADS:addSAMSitesByPrefix('bSAM')
 blueIADS:getSAMSitesByNatoName('Patriot str'):setEngagementZone(SkynetIADSAbstractRadarElement.GO_LIVE_WHEN_IN_SEARCH_RANGE)
 blueIADS:getSAMSitesByNatoName('Hawk str'):setEngagementZone(SkynetIADSAbstractRadarElement.GO_LIVE_WHEN_IN_SEARCH_RANGE)
---blueIADS:addRadioMenu()  
+blueIADS:addRadioMenu()  
 
 blueIADS:activate()    
+]]--
 
-
-function SEF_addIADS ()
+function SEF_ReaddIADS ()
   env.info("Adding Respawns to IADS", false)
-  bBASECAP=SET_GROUP:New():FilterPrefixes("bSAM-BASECAP#"):FilterActive(true):FilterOnce()
-  All=SET_GROUP:New():FilterActive(true):FilterStart()
+  blueIADS = SkynetIADS:create('US SAMs')
+  blueIADS:deactivate()
+  blueIADS:setUpdateInterval(5)
+  blueIADS:addEarlyWarningRadarsByPrefix('bEWR')
   blueIADS:addSAMSitesByPrefix('bSAM')
+  blueIADS:getSAMSitesByNatoName('Patriot str'):setEngagementZone(SkynetIADSAbstractRadarElement.GO_LIVE_WHEN_IN_SEARCH_RANGE)
+  blueIADS:getSAMSitesByNatoName('Hawk str'):setEngagementZone(SkynetIADSAbstractRadarElement.GO_LIVE_WHEN_IN_SEARCH_RANGE)
+  --blueIADS:addRadioMenu()  
+  blueIADS:activate()  
   env.info("Respawns integrated into IADS", false)
+  timer.scheduleFunction(SEF_ReaddIADS, nil, timer.getTime() + 1800)  --1800
   end
 
-timer.scheduleFunction(SEF_addIADS, nil, timer.getTime() + 75)
+timer.scheduleFunction(SEF_ReaddIADS, nil, timer.getTime() + 45)
+
 
 
 env.info("Blue IADS Complete", false)
