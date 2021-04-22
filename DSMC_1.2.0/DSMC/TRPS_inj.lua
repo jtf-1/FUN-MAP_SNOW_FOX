@@ -1,6 +1,5 @@
--- THIS IS AN EXACT CLONE OF CTLD by Ciribob, with added code to remove mist dependancies and add some automation.
--- custom DSMC code is at bottom!
--- and a few spots in between (alt.sanity)
+-- THIS IS MODIFIED VERSION OF CTLD by Ciribob, with added code to remove mist dependancies and add some automation.
+
 
 local ModuleName  	= "TRPS_inj"
 local MainVersion 	= DSMC_MainVersion or "missing, loaded without DSMC"
@@ -41,13 +40,13 @@ local debugProcessDetail = DSMC_debugProcessDetail or false
 
 
 --test variables often changed
-TRPS.unpackRestriction      = false -- if false, you can unpack in logistic zone
-TRPS.forceCrateToBeMoved    = true -- a crate must be picked up at least once and moved before it can be unpacked. Helps to reduce crate spam
+TRPS.unpackRestriction      = true -- if false, you can unpack in logistic zone
+TRPS.forceCrateToBeMoved    = false -- a crate must be picked up at least once and moved before it can be unpacked. Helps to reduce crate spam
 TRPS.datespan               = 30 -- number of years that DSMC goes back to identify available units, using DCS database
 TRPS.crateReductionFactor   = TRPScrateReductionFactor or 1.5 -- in this version the crates required to built a vehicle depends from the life points. the more you increase this value, the lesser crates are required
 TRPS.crateLargeToSmallRatio = 1 -- this variable define how many small crates equals to large crates. "3" means that 3 small crates equals to 1 large crates.
 TRPS.buildTimeFOB           = 240 --time in seconds for the FOB to be built
-TRPS.crateWaitTime          = 30 -- time in seconds to wait before you can spawn another crate
+TRPS.crateWaitTime          = 5 -- time in seconds to wait before you can spawn another crate
 TRPS.f10menuUpdateFreq      = 1 -- time in seconds between an F10 menù update and the subsequent one
 TRPS.beaconMinFreq          = 129000000
 TRPS.beaconMaxFreq          = 139000000
@@ -31213,8 +31212,6 @@ if not DSMC_baseUcounter then
 end
 
 
-
-
 local trpsDynAddIndex 		= {[' air '] = 0, [' hel '] = 0, [' gnd '] = 0, [' bld '] = 0, [' static '] = 0, [' shp '] = 0}
 local trpsAddedObjects 		= {}  -- da mist
 local trpsAddedGroups 		= {}  -- da mist
@@ -31578,7 +31575,10 @@ end
 
 function TRPS.dynAddStatic(newObj)
 
+    local newHunit = 0 
 	if newObj.units and newObj.units[1] then 
+        local u = newObj.units[1]
+        newHunit = u.heading
 		for entry, val in pairs(newObj.units[1]) do
 			if newObj[entry] and newObj[entry] ~= val or not newObj[entry] then
 				newObj[entry] = val
@@ -31633,7 +31633,7 @@ function TRPS.dynAddStatic(newObj)
 	end
 
 	if not newObj.heading then
-		newObj.heading = math.random(360)
+		newObj.heading = newHunit or 0 --math.random(360)
 	end
 	
 	if newObj.categoryStatic then
@@ -32358,9 +32358,8 @@ TRPS.unitLoadLimits = {
     ["SA342M"] = 4,
 	["SA342Minigun"] = 4,
 	["Ka-50"] = 0,
-
+    ["Mi-24P"] = 8, -- check if ok
 }
-
 
 -- ************** Allowable actions for UNIT TYPES ******************
 
@@ -32817,7 +32816,9 @@ function updateClassCount()
                                     for _groupId, _group in pairs(_objectTypeData.group) do
                                         if _group and _group.units and type(_group.units) == 'table' then                                       
                                             for _unitNum, _unit in pairs(_group.units) do
-                                                local unitName = env.getValueDictByKey(_unit.name)
+                                                --DICTPROBLEM
+                                                --local unitName = env.getValueDictByKey(_unit.name)
+                                                local unitName = _unit.name
                                                 if unitName then
                                                     local unit = Unit.getByName(unitName)
                                                     if unit then
@@ -34796,7 +34797,7 @@ function TRPS.loadTroops(_heli, _troops, _numberOrTemplate)
 
         _onboard.troops = TRPS.generateTroopTypes(_heli:getCoalition(), _numberOrTemplate, _heli:getCountry())
 
-        --trigger.action.outTextForCoalition(_heli:getCoalition(), TRPS.getPlayerNameOrType(_heli) .. " loaded troops into " .. _heli:getTypeName(), 10)
+        trigger.action.outTextForCoalition(_heli:getCoalition(), TRPS.getPlayerNameOrType(_heli) .. " loaded troops into " .. _heli:getTypeName(), 10)
 
         TRPS.processCallback({unit = _heli, onboard = _onboard.troops, action = "load_troops"})	
 		
@@ -39999,7 +40000,7 @@ function TRPS.PlayerIsInside:onEvent(event)
                         if gId then
                             
                             local p = TRPS.getPlayerNameOrType(unit)
-                            local t = "Dear " .. tostring(p) .. ", the DSMC's 1.1 version of CTLD is active in this mission. To learn more about its features please go to the F10 Informations & signals menu and select the DSMC's CTLD instruction option."
+                            local t = "Dear " .. tostring(p) .. ", the DSMC's 1.2 version of CTLD is active in this mission. To learn more about its features please go to the F10 Informations & signals menu and select the DSMC's CTLD instruction option."
                             trigger.action.outTextForGroup(gId, t, 15)
 
 
@@ -40123,7 +40124,7 @@ function TRPS.playerLeave:onEvent(event)
                 end
                 
 
-                if unitName and playerId and _rootPath then -- NON SI PASSA DA QUI!!!!
+                if unitName and playerId and _rootPath then 
                     
                     TRPS.transportPilotNames[unitName] = nil
                     env.info(ModuleName .. " playerLeave removing entry from transportPilotNames: " .. tostring(unitName))
@@ -40187,8 +40188,10 @@ function TRPS.updateCTLDTables()
 									for _groupId, _group in pairs(_objectTypeData.group) do
 										if _group and _group.units and type(_group.units) == 'table' then
 											local infantryCount = 0
-											local unitCount = 0										
-											local groupName = env.getValueDictByKey(_group.name)
+											local unitCount = 0		
+                                            -- DICTPROBLEM								
+											--local groupName = env.getValueDictByKey(_group.name) -- DICTPROBLEM
+                                            local groupName = _group.name
 											local Table_group = Group.getByName(groupName)
                                             local check_JTAC = false
                                             if Table_group then
@@ -40196,8 +40199,11 @@ function TRPS.updateCTLDTables()
 																			
 												for _unitNum, _unit in pairs(_group.units) do
 													--if _unitNum == 1 then
-														local unitName = env.getValueDictByKey(_unit.name)
-														if unitName then
+														-- DICTPROBLEM
+                                                        --local unitName = env.getValueDictByKey(_unit.name)
+														local unitName = _unit.name
+
+                                                        if unitName then
 															local unit = Unit.getByName(unitName)
 															if unit then
 																if unit:getLife() > 0 then
@@ -40353,8 +40359,9 @@ function TRPS.updateCTLDTables()
                                             if _group.dead == false then
                                                 for _unitNum, _unit in pairs(_group.units) do
                                                     --if _unitNum == 1 then		
-                                                        local unitName = env.getValueDictByKey(_unit.name)
-                                                        
+                                                        --DICTPROBLEM
+                                                        --local unitName = env.getValueDictByKey(_unit.name)
+                                                        local unitName = _unit.name
                                                         if unitName then		
                                                             local unitTable = Unit.getByName(unitName)
                                                             env.info(ModuleName .. " updateCTLDTables: unitName: " .. tostring(unitName))
@@ -40500,7 +40507,9 @@ function TRPS.updateCTLDTables()
 									for _groupId, _group in pairs(_objectTypeData.group) do
 										if _group and _group.units and type(_group.units) == 'table' then								
 											for _unitNum, _unit in pairs(_group.units) do
-                                                local unitName = env.getValueDictByKey(_unit.name)
+                                                --DICTPROBLEM
+                                                --local unitName = env.getValueDictByKey(_unit.name)
+                                                local unitName =_unit.name
                                                 if unitName then                                
                                                     local uTbl = Unit.getByName(unitName)
                                                     if uTbl then
@@ -40617,8 +40626,11 @@ for _coalitionName, _coalitionData in pairs(env.mission.coalition) do
                                 if _group and _group.units and type(_group.units) == 'table' then
                                     for _unitNum, _unit in pairs(_group.units) do
                                         if _unit.canCargo == true then
-                                            local _cargoName = env.getValueDictByKey(_unit.name)
-											local _weight = env.getValueDictByKey(_unit.mass)				--get the cargo mass
+                                            -- DICTPROBLEM
+                                            --local _cargoName = env.getValueDictByKey(_unit.name)
+                                            --local _weight = env.getValueDictByKey(_unit.mass)
+                                            local _cargoName = _unit.name
+											local _weight = _unit.mass				--get the cargo mass
 											local _crateType = TRPS.crateLookupTable[tostring(_weight)]		--compare cargi weight to the crate type table
 
                                             env.info(ModuleName .. " addeding cargo: " .. tostring(_cargoName) .. ", _coalitionName: " .. tostring(_coalitionName) .. ", _crateType: " .. tostring(_crateType))
@@ -40663,18 +40675,5 @@ end
 
 
 
-        --[[
-        ["Support & logistic"] = {
-            { weight = 591, desc = "Command SKP", unit = "SKP-11", side = 1},
-            { weight = 593, desc = "Rearm Ural", unit = "Ural-375", side = 1},
-            { weight = 595, desc = "Electric generator Zil-131", unit = "ZiL-131 APA-80", side = 1},
-            { weight = 597, desc = "Fuel tank vehicle ATZ", unit = "ATZ-10", side = 1},
-
-            { weight = 592, desc = "Hummer vehicle", unit = "Hummer", side = 2},
-            { weight = 594, desc = "Rearm vehicle M-818", unit = "M 818", side = 2},
-            { weight = 596, desc = "Utility vehicle HEMTT TFFT", unit = "HEMTT TFFT", side = 2},
-            { weight = 598, desc = "Fuel tank vehicle HEMTT", unit = "M978 HEMTT Tanker", side = 2},
-
-            { weight = 599, desc = "Repair & rearm crate", unit = "REPAIR-CRATE", obj_crate = TRPS.repairCrateModel},
-        },   
-        --]]--
+--
+env.info((ModuleName .. ": Loaded " .. MainVersion .. "." .. SubVersion .. "." .. Build .. ", released " .. Date))

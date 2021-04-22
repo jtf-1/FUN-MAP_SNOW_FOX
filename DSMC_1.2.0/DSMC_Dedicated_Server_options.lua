@@ -17,18 +17,20 @@ DSMC_AutosaveProcess_min	= 2			-- minutes, number, from 2 to 480
 -- Save scenery enhancement
 DSMC_MapPersistence 		= true		-- true / false
 DSMC_StaticDeadUnits 		= false		-- true / false
-DSMC_UpdateStartTime		= false 		-- true / false
-DSMC_UpdateStartTime_mode	= 1 		-- 1,2 or 3. Ignored if UpdateStartTime is false. 1 = keep continous scenery. 2 = start the next day, random hour. 3 = use current date, default mission time.
+DSMC_UpdateStartTime		= true 		-- true / false. Works only for mission with timeframe 1970-today, due to function limitation. For mission before 1970, i.e. WWII or Korea, it will be skipped.
+DSMC_UpdateStartTime_mode	= 2 		-- 1,2 or 3. Ignored if UpdateStartTime is false. 1 = keep continous scenery. 2 = start the next day, random hour. 3 = use current date, default mission time.
 DSMC_TrackWarehouses		= false	 	-- true / false
 DSMC_TrackSpawnedUnits		= true	 	-- true / false
 DSMC_WeatherUpdate          = true      -- true / false
 DSMC_ExportDocuments        = true      -- true / false
 DSMC_CreateClientSlot       = true      -- true / false
 
--- CTLD setup stuff
+-- CTLD & CSAR setup stuff
 DSMC_automated_CTLD			= true	 	-- true / false
 DSMC_CTLD_RealSlingload		= false	 	-- true / false
 
+DSMC_automated_CSAR         = true      -- true / false
+DSMC_DCSR_useCoalitionMessages   = true	 	-- true / false
 
 -- Debug. Leave on only for bugtracking!!!
 DSMC_DebugMode				= false		-- true / false
@@ -38,11 +40,12 @@ DSMC_DebugMode				= false		-- true / false
 -- SERVER CUSTOMIZATION   ###########################################
 -- ##################################################################
 
-DSMC_WarehouseAutoSetup     = true      -- true / false If true, at each mission end the supply net will be automatically rebuilt. Check manual!
-DSMC_DisableF10save			= true      -- true / false F10 menù save option disable switch
+DSMC_WarehouseAutoSetup     = false      -- true / false. If true, at each mission end the supply net will be automatically rebuilt. Check manual!
+DSMC_DisableF10save			= false      -- true / false. F10 menù save option disable switch
 DSMC_AutosaveExit_hours		= 24        -- value, 1->24 or 25. hours of simulation after with DCS closes, from 0 to 24 (higher values won't be accepted). If clients are online, it will delay 5 minutes and so on till nobody is online.
 DSMC_AutosaveExit_time      = 0         -- value, 1->23. hour at witch DCS will automatically close regardless of clients or other settings. works only if DSMC_AutosaveExit_hours is set to >24. Values out of the 1-23 range will be ignored.
-DSMC_AutoRestart_active     = false      -- true / false If true, DSMC will load a dynamically created .bat file (base version in DSMC\files, kindly provided by Maverick87Shaka) that will monitor DCS process. Once it close, it will try to load up automatically. BEWARE: no stop on that process is provided, you must do it on your own.
+DSMC_AutosaveExit_safe      = true      -- true / false. If false, the autosaveExit will kill DCS even if there are clients online, for those server admin who prefer to have a specific kill time.
+DSMC_AutoRestart_active     = false     -- true / false If true, DSMC will load a dynamically created .bat file (base version in DSMC\files, kindly provided by Maverick87Shaka) that will monitor DCS process. Once it close, it will try to load up automatically. BEWARE: no stop on that process is provided, you must do it on your own.
 DSMC_CreateSlotCoalition    = "all"     -- "all", "blue", "red". Case sensitive. If wrong, it reverts to "all". If blue or red, slots will be created only for that coalition
 DSMC_StarTimeHourMin        = 4         -- 1-> 14. hour 0-24 that will be used as minimum in the start mission time randomization, valid only with DSMC_UpdateStartTime set to true and DSMC_UpdateStartTime_mode set to "2". Out of the defined range, the value will be set as "4"
 DSMC_StarTimeHourMax        = 18        -- 15-> 23. hour 0-24 that will be used as maximum in the start mission time randomization, valid only with DSMC_UpdateStartTime set to true and DSMC_UpdateStartTime_mode set to "2". Out of the defined range, the value will be set as "16"

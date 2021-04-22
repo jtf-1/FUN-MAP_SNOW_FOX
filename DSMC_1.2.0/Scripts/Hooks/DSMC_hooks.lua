@@ -35,8 +35,8 @@ package.path =
 DSMC_ModuleName  	= "HOOKS"
 DSMC_MainVersion 	= "1"
 DSMC_SubVersion 	= "2"
-DSMC_Build 			= "1252"
-DSMC_Date			= "13/03/2021"
+DSMC_Build 			= "1270"
+DSMC_Date			= "17/04/2021"
 
 -- ## DEBUG TO TEXT FUNCTION
 debugProcess	= true -- this should be left on for testers normal ops and test missions
@@ -177,6 +177,7 @@ function loadDSMCHooks()
 							opt_WRHS_var		= pl_data.WRHS
 							opt_SPWN_var		= pl_data.SPWN
 							opt_TRPS_var		= pl_data.TRPS
+							opt_DCSR_var		= pl_data.DCSR
 							opt_TRPS_setup_var	= pl_data.TRPS_setup
 							opt_DEBUG_var		= pl_data.DEBUG
 							opt_ATRL_var		= pl_data.ATRL
@@ -212,6 +213,7 @@ function loadDSMCHooks()
 	SLOT_coa_var						= DSMC_CreateSlotCoalition or "all" -- to test, set this "blue" or "red"
 	STOP_var							= DSMC_AutosaveExit_hours
 	STOP_var_time						= DSMC_AutosaveExit_time
+	STOP_var_safe						= DSMC_AutosaveExit_safe
 	RSTS_var							= DSMC_AutoRestart_active
 	SBEO_var							= DSMC_BuilderToolsBeta or false -- opt_SBEO or    NOT USED NOW if true some mess may happen
 	TRPS_var							= opt_TRPS_var or DSMC_automated_CTLD
@@ -227,6 +229,8 @@ function loadDSMCHooks()
 	TRPS_setup10_var					= DSMC_CTLD_UseYearFilter or true
 	TRPS_setup11_var					= DSMC_CTLD_crateReductionFactor or false
 	TRPS_setup12_var					= DSMC_CTLD_JTACenable or false
+	DCSR_var							= opt_DCSR_var or DSMC_automated_CSAR
+	DCSR_setup_var						= DSMC_DCSR_useCoalitionMessages
 	GOAP_var							= false -- opt_GOAP_var or DSMC_AutomaticAI
 
 	-- debug call
@@ -241,6 +245,7 @@ function loadDSMCHooks()
 	writeDebugBase(DSMC_ModuleName .. ": WRHS_var = " ..tostring(WRHS_var))
 	writeDebugBase(DSMC_ModuleName .. ": SPWN_var = " ..tostring(SPWN_var))
 	writeDebugBase(DSMC_ModuleName .. ": TRPS_var = " ..tostring(TRPS_var))
+	writeDebugBase(DSMC_ModuleName .. ": DCSR_var = " ..tostring(DCSR_var))
 	writeDebugBase(DSMC_ModuleName .. ": DEBUG_var = " ..tostring(DEBUG_var))
 	writeDebugBase(DSMC_ModuleName .. ": ATRL_var = " ..tostring(ATRL_var))
 	writeDebugBase(DSMC_ModuleName .. ": ATRL_time_var = " ..tostring(ATRL_time_var))
@@ -250,6 +255,7 @@ function loadDSMCHooks()
 	writeDebugBase(DSMC_ModuleName .. ": UPAP_var = " ..tostring(UPAP_var))
 	writeDebugBase(DSMC_ModuleName .. ": STOP_var = " ..tostring(STOP_var))
 	writeDebugBase(DSMC_ModuleName .. ": STOP_var_time = " ..tostring(STOP_var_time))
+	writeDebugBase(DSMC_ModuleName .. ": STOP_var_safe = " ..tostring(STOP_var_safe))
 	writeDebugBase(DSMC_ModuleName .. ": RSTS_var = " ..tostring(RSTS_var))
 	writeDebugBase(DSMC_ModuleName .. ": SBEO_var = " ..tostring(SBEO_var))
 	writeDebugBase(DSMC_ModuleName .. ": TRPS_setup_var realslingload = " ..tostring(TRPS_setup_var))
@@ -514,7 +520,9 @@ end
 -- callback on start
 function startDSMCprocess()
 	if UTIL and SAVE then
-		
+
+		--UTIL.dumpTable("nightlyGa.lua", _G)
+
 		--## CHECKING MIZ FILENAME, IF NOT DMSCyourfilename THEN STOP
 		loadedMizFileName = DCS.getMissionName()
 		loadedMissionPath = DCS.getMissionFilename()		
@@ -582,7 +590,8 @@ function startDSMCprocess()
 						baseUcounter = baseUcounter + 1
 
 						-- filter units table
-						UTIL.filterNamingTables(SAVE.tempEnv.dictionary)
+						--DICTPROBLEM
+						UTIL.filterNamingTables(SAVE.tempEnv.mission) --SAVE.tempEnv.dictionary
 
 						-- inject version
 						UTIL.inJectCode("DSMC_MainVersion", "DSMC_MainVersion = " .. tostring(DSMC_MainVersion))
@@ -717,8 +726,28 @@ function startDSMCprocess()
 
 						else
 							writeDebugBase(DSMC_ModuleName .. ": TRPS not required")	
-						end
+						end		
 						
+						-- CSAR script
+						if DCSR_var then
+							if DCSR_setup_var == true then
+								UTIL.inJectCode("DCSR_Setup", "DSMC_DCSR_useCoalitionMessages_var = true")
+							else
+								UTIL.inJectCode("DCSR_Setup", "DSMC_DCSR_useCoalitionMessages_var = false")
+							end
+
+							local t = io.open(DSMCdir .. "DCSR_inj.lua", "r")
+							if t then
+								local DCSR_Embeddedcode = tostring(t:read("*all"))
+								t:close()
+								UTIL.inJectCode("DCSR_Embeddedcode", DCSR_Embeddedcode)					
+							else
+								writeDebugDetail(DSMC_ModuleName .. ": DCSR_inj.lua not found")	
+							end
+						else
+							writeDebugBase(DSMC_ModuleName .. ": DCSR not required")							
+						end
+
 						-- code from SPWN module
 						if SPWN_var then
 							writeDebugDetail(DSMC_ModuleName .. ": configuring inside mission trackspawnedinfantry = " .. tostring(trackspawnedinfantry))
@@ -1081,20 +1110,30 @@ function DSMC.onTriggerMessage(message)
 
 	elseif message == "DSMC is trying to restart the server! land or disconnect as soon as you can: DSMC will try again in 10 minutes" then			
 		--command server closeup
-		local num_clients = false
-		local player_tbl = net.get_player_list()
-		if player_tbl then
-			num_clients = tonumber(#player_tbl) - 1
-			writeDebugDetail(DSMC_ModuleName .. ": there are " .. tostring(num_clients) .. " clients connected")
-			if num_clients == 0 then
-				writeDebugBase(DSMC_ModuleName .. ": Closing DCS!")
 
-				DCS.stopMission()
-				DCSshouldCloseNow = true
-			else
-				writeDebugBase(DSMC_ModuleName .. ": there are " .. tostring(num_clients) .. " clients connected, can't close DCS: delayed 10 mins")	
-			end			
-		end	
+		if STOP_var_safe == true then
+
+			local num_clients = false
+			local player_tbl = net.get_player_list()
+			if player_tbl then
+				num_clients = tonumber(#player_tbl) - 1
+				writeDebugDetail(DSMC_ModuleName .. ": there are " .. tostring(num_clients) .. " clients connected")
+				if num_clients == 0 then
+					writeDebugBase(DSMC_ModuleName .. ": Closing DCS!")
+
+					DCS.stopMission()
+					DCSshouldCloseNow = true
+				else
+					writeDebugBase(DSMC_ModuleName .. ": there are " .. tostring(num_clients) .. " clients connected, can't close DCS: delayed 10 mins")	
+				end			
+			end	
+		else
+			writeDebugBase(DSMC_ModuleName .. ": Closing DCS without checking clients!")
+
+			DCS.stopMission()
+			DCSshouldCloseNow = true
+
+		end
 	end	
 	
 end

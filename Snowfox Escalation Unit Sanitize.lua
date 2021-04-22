@@ -21,7 +21,7 @@ Red8=SET_GROUP:New():FilterPrefixes("rSAM-8"):FilterActive(true):FilterOnce()
 Red9=SET_GROUP:New():FilterPrefixes("rSAM-9"):FilterActive(true):FilterOnce()
 RedBase=SET_GROUP:New():FilterPrefixes("rSAM-BASECAP#"):FilterActive(true):FilterOnce()
 DownedPilot=SET_GROUP:New():FilterPrefixes("Downed Pilot"):FilterActive(true):FilterOnce()
-Crates=SET_GROUP:New():FilterPrefixes("Cargo Static Group"):FilterActive(true):FilterOnce()
+Crates=SET_STATIC:New():FilterPrefixes("Cargo Static Group"):FilterOnce()
 
 --=====================================================================================
 

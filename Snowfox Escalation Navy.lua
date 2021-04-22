@@ -105,91 +105,91 @@ ArcoRoosevelt:Start()
 --- Airboss Truman ---
 -----------------------
 
-airbossTruman=AIRBOSS:New( "CVN-75 Truman", "Truman" )
+airbosstruman=AIRBOSS:New( "CVN-75 Truman", "Truman" )
 
-airbossTruman:Load(nil, "PG_Airboss-USS Truman_LSOgrades.csv")
-airbossTruman:SetAutoSave(nil, "PG_Airboss-USS Truman_LSOgrades.csv")
+airbosstruman:Load(nil, "PG_Airboss-USS Truman_LSOgrades.csv")
+airbosstruman:SetAutoSave(nil, "PG_Airboss-USS Truman_LSOgrades.csv")
 
-local TrumanOffset_deg = 0
-local TrumanDefaultPlayerSkill = AIRBOSS.Difficulty.Normal -- default skill level
-local TrumanRadioRelayMarshall = UNIT:FindByName("RadioRelayMarshall_Truman")
-local TrumanRadioRelayPaddles = UNIT:FindByName("RadioRelayPaddles_Truman")
-local TrumanClouds, TrumanVisibility, TrumanFog, TrumanDust = airbossTruman:_GetStaticWeather() -- get mission weather (assumes static weather is used)
+local trumanOffset_deg = 0
+local trumanDefaultPlayerSkill = AIRBOSS.Difficulty.Normal -- default skill level
+local trumanRadioRelayMarshall = UNIT:FindByName("RadioRelayMarshall_Truman")
+local trumanRadioRelayPaddles = UNIT:FindByName("RadioRelayPaddles_Truman")
+local trumanClouds, trumanVisibility, trumanFog, trumanDust = airbosstruman:_GetStaticWeather() -- get mission weather (assumes static weather is used)
 
 --- Determine Daytime Case
 -- adjust case according to weather state
 
-local TrumanCase = 1 -- default to Case I
+local trumanCase = 1 -- default to Case I
 
-if (TrumanClouds.base < 305 and TrumanClouds.density > 8) or TrumanVisibility < 8000 then -- cloudbase < 1000' or viz < 5 miles, Case III
-  TrumanCase = 3
-elseif TrumanFog and TrumanFog.thickness > 60 and TrumanFog.visibility < 8000 then -- visibility in fog < 5nm, Case III
-  TrumanCase = 3
-elseif (TrumanClouds.base < 915 and TrumanClouds.density > 8) and TrumanVisibility >= 8000 then -- cloudbase < 3000', viz > 5 miles, Case II
-  TrumanCase = 2
+if (trumanClouds.base < 305 and trumanClouds.density > 8) or trumanVisibility < 8000 then -- cloudbase < 1000' or viz < 5 miles, Case III
+  trumanCase = 3
+elseif trumanFog and trumanFog.thickness > 60 and trumanFog.visibility < 8000 then -- visibility in fog < 5nm, Case III
+  trumanCase = 3
+elseif (trumanClouds.base < 915 and trumanClouds.density > 8) and trumanVisibility >= 8000 then -- cloudbase < 3000', viz > 5 miles, Case II
+  trumanCase = 2
 end     
  
-airbossTruman:SetMenuRecovery(20, 28, false, 30)
-airbossTruman:SetSoundfilesFolder("Airboss Soundfiles/")
-airbossTruman:SetVoiceOversLSOByRaynor()
-airbossTruman:SetVoiceOversMarshalByRaynor()
-airbossTruman:SetRecoveryTanker(ArcoRoosevelt)
-airbossTruman:SetMaxSectionSize(4)
-airbossTruman:SetTACAN(75,"X","TRU")
-airbossTruman:SetICLS( 5,"TRU" )
-airbossTruman:SetCarrierControlledArea( 50 )
-airbossTruman:SetCollisionDistance(15)
-airbossTruman:SetHandleAION()
-airbossTruman:SetPatrolAdInfinitum(true)
-airbossTruman:SetDespawnOnEngineShutdown(true)
-airbossTruman:SetLSORadio(308.475, AM)
-airbossTruman:SetMarshalRadio(285.675, AM)
-airbossTruman:SetRadioRelayLSO( TrumanRadioRelayPaddles )
-airbossTruman:SetRadioRelayMarshal( TrumanRadioRelayMarshall  )
-airbossTruman:SetAirbossNiceGuy(true)
-airbossTruman:SetDefaultPlayerSkill(TrumanDefaultPlayerSkill)
-airbossTruman:SetRespawnAI(true)
-airbossTruman:SetMenuSmokeZones(false)
-airbossTruman:SetMenuMarkZones(false) -- disable marking zones using smoke or flares
+airbosstruman:SetMenuRecovery(20, 28, false, 30)
+airbosstruman:SetSoundfilesFolder("Airboss Soundfiles/")
+airbosstruman:SetVoiceOversLSOByRaynor()
+airbosstruman:SetVoiceOversMarshalByRaynor()
+airbosstruman:SetRecoveryTanker(ArcoRoosevelt)
+airbosstruman:SetMaxSectionSize(4)
+airbosstruman:SetTACAN(75,"X","TRU")
+airbosstruman:SetICLS( 5,"TRU" )
+airbosstruman:SetCarrierControlledArea( 50 )
+airbosstruman:SetCollisionDistance(15)
+airbosstruman:SetHandleAION()
+airbosstruman:SetPatrolAdInfinitum(true)
+airbosstruman:SetDespawnOnEngineShutdown(true)
+airbosstruman:SetLSORadio(308.475, AM)
+airbosstruman:SetMarshalRadio(285.675, AM)
+airbosstruman:SetRadioRelayLSO( trumanRadioRelayPaddles )
+airbosstruman:SetRadioRelayMarshal( trumanRadioRelayMarshall  )
+airbosstruman:SetAirbossNiceGuy(true)
+airbosstruman:SetDefaultPlayerSkill(trumanDefaultPlayerSkill)
+airbosstruman:SetRespawnAI(true)
+airbosstruman:SetMenuSmokeZones(false)
+airbosstruman:SetMenuMarkZones(false) -- disable marking zones using smoke or flares
 
+--[[
 --- Fun Map Recovery Windows 
 -- sunrise and sunset dependant on mission date
 -- https://www.timeanddate.com/sun/united-arab-emirates/abu-dhabi?month=4&year=2011
 -- Sunrise @ 05:45, Sunset @ 18:45, recovery sunrise+10 and @ sunset-10
 -- otherwise, intiate recovery through F10 menu
---airbossTruman:AddRecoveryWindow( "5:55", "18:35", TrumanCase, TrumanOffset_deg, true, 30 ) 
---airbossTruman:AddRecoveryWindow( "18:35", "5:55+1", 3, TrumanOffset_deg, true, 30 ) 
---airbossTruman:AddRecoveryWindow( "5:55+1", "18:35+1", TrumanCase, TrumanOffset_deg, true, 30 ) 
+--airbosstruman:AddRecoveryWindow( "5:55", "18:35", trumanCase, trumanOffset_deg, true, 30 ) 
+--airbosstruman:AddRecoveryWindow( "18:35", "5:55+1", 3, trumanOffset_deg, true, 30 ) 
+--airbosstruman:AddRecoveryWindow( "5:55+1", "18:35+1", trumanCase, trumanOffset_deg, true, 30 ) 
 
---[[
-airbossTruman:AddRecoveryWindow("23:15", "23:45", 3, TrumanOffset_deg, true, 28, true)
---airbossTruman:AddRecoveryWindow("00:15", "00:45", 3, TrumanOffset_deg, true, 28)
-airbossTruman:AddRecoveryWindow("01:15", "01:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("02:15", "02:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("03:15", "03:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("04:15", "04:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("05:15", "05:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("06:15", "06:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("07:15", "07:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("08:15", "08:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("09:15", "09:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("10:15", "10:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("11:15", "11:45", TrumanCase, TrumanOffset_deg, true, 28, true)
---airbossTruman:AddRecoveryWindow("12:15", "12:45", TrumanCase, TrumanOffset_deg, true, 28)
-airbossTruman:AddRecoveryWindow("13:15", "13:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("14:15", "14:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("15:15", "15:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("16:15", "16:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("17:15", "17:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("18:15", "18:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("19:15", "19:45", TrumanCase, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("20:15", "20:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("21:15", "21:45", 3, TrumanOffset_deg, true, 28, true)
-airbossTruman:AddRecoveryWindow("22:15", "22:45", 3, TrumanOffset_deg, true, 28, true)
+
+airbosstruman:AddRecoveryWindow("23:15", "23:45", 3, trumanOffset_deg, true, 28, true)
+--airbosstruman:AddRecoveryWindow("00:15", "00:45", 3, trumanOffset_deg, true, 28)
+airbosstruman:AddRecoveryWindow("01:15", "01:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("02:15", "02:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("03:15", "03:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("04:15", "04:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("05:15", "05:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("06:15", "06:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("07:15", "07:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("08:15", "08:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("09:15", "09:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("10:15", "10:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("11:15", "11:45", trumanCase, trumanOffset_deg, true, 28, true)
+--airbosstruman:AddRecoveryWindow("12:15", "12:45", trumanCase, trumanOffset_deg, true, 28)
+airbosstruman:AddRecoveryWindow("13:15", "13:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("14:15", "14:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("15:15", "15:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("16:15", "16:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("17:15", "17:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("18:15", "18:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("19:15", "19:45", trumanCase, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("20:15", "20:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("21:15", "21:45", 3, trumanOffset_deg, true, 28, true)
+airbosstruman:AddRecoveryWindow("22:15", "22:45", 3, trumanOffset_deg, true, 28, true)
 ]]--
 
-
-airbossTruman:Start()
+airbosstruman:Start()
 
 -----------------------
 --- Airboss Tarawa ---

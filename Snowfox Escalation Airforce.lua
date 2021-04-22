@@ -767,9 +767,9 @@ function SEF_REDSQUADRON1_DEPLOYMENT()
 			AlphaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Lengeh
 		end
 	else
-		--Set Alpha To Lar And Patrol Bandar Lengeh As We Need That Link Back		
-		AlphaPrimaryAirbase = AIRBASE.PersianGulf.Lar_Airbase
-		AlphaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Lengeh
+		--Set Alpha To Shiraz And Patrol Lar As We Need That Link Back		
+		AlphaPrimaryAirbase = AIRBASE.PersianGulf.Shiraz_International_Airport
+		AlphaDestinationAirbase = AIRBASE.PersianGulf.Lar_Airbase --AIRBASE.PersianGulf.Bandar_Lengeh
 	end		
 end
 
@@ -2992,10 +2992,13 @@ function SEF_REDSQUADRON2_DEPLOYMENT()
 		--Set Beta To Qeshm, Patrol Havadarya
 		BetaPrimaryAirbase = AIRBASE.PersianGulf.Qeshm_Island
 		BetaDestinationAirbase = AIRBASE.PersianGulf.Havadarya
-	else
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Havadarya):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Ras_Al_Khaimah):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Lar_Airbase):getCoalition() == 1) then
 		--Set Beta To Lar As We've Lost Both Havadarya And Qeshm, We're On The Defensive
 		BetaPrimaryAirbase = AIRBASE.PersianGulf.Lar_Airbase
 		BetaDestinationAirbase = AIRBASE.PersianGulf.Havadarya
+	else
+	  BetaPrimaryAirbase = AIRBASE.PersianGulf.Shiraz_International_Airport
+    BetaDestinationAirbase = AIRBASE.PersianGulf.Lar_Airbase
 	end
 end
 
@@ -3144,35 +3147,38 @@ function SEF_REDSQUADRON3_DEPLOYMENT()
 		local Randomiser = math.random(1,100)		
 		if ( Randomiser <= 50 ) then	
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		else
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Fujairah_Intl
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Fujairah_Intl
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		end	
 	elseif ( Airbase.getByName(AIRBASE.PersianGulf.Bandar_Abbas_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Bandar_e_Jask_airfield):getCoalition() == 1 and Airbase.getByName(AIRBASE.PersianGulf.Fujairah_Intl):getCoalition() ~= 1 ) then
 		--Case 010: Set Gamma To Jask And Patrol Either Jask Or Fujairah And Leave Bandar Abbas For Delta/Epsilon
 		local Randomiser = math.random(1,100)		
 		if ( Randomiser <= 50 ) then
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		else
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Fujairah_Intl
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		end	
 	elseif ( Airbase.getByName(AIRBASE.PersianGulf.Bandar_Abbas_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Bandar_e_Jask_airfield):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Fujairah_Intl):getCoalition() == 1 ) then
 		--Case 001: Set Gamma To Fujairah And Patrol Either Jask Or Fujairah And Leave Bandar Abbas For Delta/Epsilon
 		local Randomiser = math.random(1,100)		
 		if ( Randomiser <= 50 ) then
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Fujairah_Intl
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_e_Jask_airfield
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		else
 			GammaPrimaryAirbase = AIRBASE.PersianGulf.Fujairah_Intl
-			GammaDestinationAirbase = AIRBASE.PersianGulf.Fujairah_Intl
+			GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		end		
-	else
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Bandar_Abbas_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Bandar_e_Jask_airfield):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Fujairah_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Jiroft_Airport):getCoalition() == 1 ) then
 		--Case 000: Set Gamma To Jiroft And Patrol Bandar Abbas
 		GammaPrimaryAirbase = AIRBASE.PersianGulf.Jiroft_Airport
 		GammaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
+  else
+    GammaPrimaryAirbase = AIRBASE.PersianGulf.Kerman_Airport
+    GammaDestinationAirbase = AIRBASE.PersianGulf.Jiroft_Airport
 	end
 end	
 
@@ -3292,10 +3298,13 @@ function SEF_REDSQUADRON4_DEPLOYMENT()
 		--Set Delta To Bandar Abbas And Patrol Qeshm As We Need It Back
 		DeltaPrimaryAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		DeltaDestinationAirbase = AIRBASE.PersianGulf.Qeshm_Island
-	else
+	elseif ( Airbase.getByName(AIRBASE.PersianGulf.Bandar_Abbas_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Qeshm_Island):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Khasab):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Jiroft_Airport):getCoalition() == 1 ) then
 		--Set Delta To Jiroft And Patrol Bandar Abbas As We Need It Back
 		DeltaPrimaryAirbase = AIRBASE.PersianGulf.Jiroft_Airport
 		DeltaDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
+  else
+    DeltaPrimaryAirbase = AIRBASE.PersianGulf.Kerman_Airport
+    DeltaDestinationAirbase = AIRBASE.PersianGulf.Jiroft_Airport 
 	end	
 end
 
@@ -3332,10 +3341,13 @@ function SEF_REDSQUADRON5_DEPLOYMENT()
 		--Set Epsilon To Bandar Abbas And Patrol Bandar Abbas
 		EpsilonPrimaryAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
 		EpsilonDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
-	else
+  elseif ( Airbase.getByName(AIRBASE.PersianGulf.Bandar_Abbas_Intl):getCoalition() ~= 1 and Airbase.getByName(AIRBASE.PersianGulf.Jiroft_Airport):getCoalition() == 1 ) then
 		--Set Epsilon To Jiroft And Patrol Bandar Abbas As We Need It Back
 		EpsilonPrimaryAirbase = AIRBASE.PersianGulf.Jiroft_Airport
 		EpsilonDestinationAirbase = AIRBASE.PersianGulf.Bandar_Abbas_Intl
+  else
+    EpsilonPrimaryAirbase = AIRBASE.PersianGulf.Kerman_Airport
+    EpsilonDestinationAirbase = AIRBASE.PersianGulf.Jiroft_Airport
 	end
 end
 

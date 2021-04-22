@@ -3,7 +3,9 @@ function SEF_BASECAP_REMOVE ()
   
   BlueBaseCAP=SET_GROUP:New():FilterPrefixes("bSAM-BASECAP#"):FilterActive(true):FilterOnce()
   BluebSAM1=SET_GROUP:New():FilterPrefixes("bSAM-1"):FilterActive(true):FilterOnce() 
-  BluebSAM2=SET_GROUP:New():FilterPrefixes("bSAM-2"):FilterActive(true):FilterOnce() 
+  BluebSAM2=SET_GROUP:New():FilterPrefixes("bSAM-2"):FilterActive(true):FilterOnce()
+  Crates=SET_STATIC:New():FilterPrefixes("Cargo Static Group"):FilterOnce()
+   
   
   --All=SET_GROUP:New():FilterActive(true):FilterStart()
   
@@ -37,7 +39,15 @@ function SEF_BASECAP_REMOVE ()
       local grpObj = BluebSAM2:GetRandom()
       --env.info(grpObj:GetName())
       grpObj:Destroy(true)
-    end    
+    end   
+     
+    local Cratescount=Crates:Count()
+    for i = 1, Cratescount do
+      local grpObj = Crates:GetRandom()
+      --env.info(grpObj:GetName())
+      grpObj:Destroy(true)
+    end
+         
   timer.scheduleFunction(SEF_BASECAP_REMOVE, nil, timer.getTime() + 7200)
   env.info("BASECAP Remove Complete", false)
 end
