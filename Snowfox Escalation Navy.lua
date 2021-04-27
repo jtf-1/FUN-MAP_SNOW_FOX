@@ -35,61 +35,6 @@ if ( Group.getByName("Jask - Coastal Patrol") ) then
 end
 
 
-
-
---[[
-local airbossTruman=AIRBOSS:New("CVN-75 Truman")
-airbossTruman:SetSoundfilesFolder("Airboss Soundfiles/")
-airbossTruman:SetVoiceOversLSOByRaynor()
-airbossTruman:SetVoiceOversMarshalByRaynor()
-airbossTruman:SetRespawnAI(true)
-airbossTruman:SetStaticWeather(false)
-airbossTruman:SetRecoveryTanker("22nd ARW Arco")
-airbossTruman:SetTACAN(75, "X", "TRU")
-airbossTruman:SetICLS(5, "TRU")
-airbossTruman:SetBeaconRefresh(300)
-airbossTruman:SetLSORadio(308.475, AM)
-airbossTruman:SetMarshalRadio(285.675, AM)
-airbossTruman:SetCarrierControlledArea(50)
-airbossTruman:SetCarrierControlledZone(10)
-airbossTruman:SetCollisionDistance(25, distance)
-airbossTruman:AddRecoveryWindow("23:15", "23:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("00:15", "00:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("01:15", "01:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("02:15", "02:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("03:15", "03:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("04:15", "04:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("05:15", "05:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("06:15", "06:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("07:15", "07:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("08:15", "08:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("09:15", "09:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("10:15", "10:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("11:15", "11:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("12:15", "12:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("13:15", "13:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("14:15", "14:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("15:15", "15:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("16:15", "16:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("17:15", "17:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("18:15", "18:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("19:15", "19:45", 1, nil, true, 28)
-airbossTruman:AddRecoveryWindow("20:15", "20:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("21:15", "21:45", 3, nil, true, 28)
-airbossTruman:AddRecoveryWindow("22:15", "22:45", 3, nil, true, 28)
---airbossTruman:SetPatrolAdInfinitum(switch)
-airbossTruman:SetDefaultPlayerSkill("Flight Student")
-airbossTruman:SetMenuSmokeZones(false)
-airbossTruman:SetMenuMarkZones(false)
-airbossTruman:SetMenuSingleCarrier(true)
-airbossTruman:SetMenuRecovery(15, 28, false, 30)
-airbossTruman:SetAirbossNiceGuy(true)
---airbossTruman:SetAutoSave("C:\\AirbossGrades\\")
---airbossTruman:SetTrapSheet("C:\\AirbossGrades\\TrapSheets\\", "trap")
-airbossTruman:Start()
-]]--
-
-
 -----------------------
 --- Airboss Arco ---
 -----------------------
@@ -116,6 +61,7 @@ local trumanRadioRelayMarshall = UNIT:FindByName("RadioRelayMarshall_Truman")
 local trumanRadioRelayPaddles = UNIT:FindByName("RadioRelayPaddles_Truman")
 local trumanClouds, trumanVisibility, trumanFog, trumanDust = airbosstruman:_GetStaticWeather() -- get mission weather (assumes static weather is used)
 
+--[[
 --- Determine Daytime Case
 -- adjust case according to weather state
 
@@ -128,6 +74,7 @@ elseif trumanFog and trumanFog.thickness > 60 and trumanFog.visibility < 8000 th
 elseif (trumanClouds.base < 915 and trumanClouds.density > 8) and trumanVisibility >= 8000 then -- cloudbase < 3000', viz > 5 miles, Case II
   trumanCase = 2
 end     
+]]-- 
  
 airbosstruman:SetMenuRecovery(20, 28, false, 30)
 airbosstruman:SetSoundfilesFolder("Airboss Soundfiles/")

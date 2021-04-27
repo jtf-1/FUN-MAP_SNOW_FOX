@@ -73,8 +73,9 @@ USAFAirForceCAP  = { "USAF F-16C",
 				 	 "USAF F/A-18C", 
 					 "USAF F-15C" }
 
-USNAirForceCAP   = { "USAF F/A-18C", 
-					 "USAF F-14B" }
+USNAirForceCAP   = { "USN F/A-18C",
+           "USN F-14A", 
+					 "USN F-14B" }
 
 UAEAFAirForceCAP = { "UAEAF M-2000C", 
 					 "UAEAF F-16C" }
@@ -82,7 +83,8 @@ UAEAFAirForceCAP = { "UAEAF M-2000C",
 CombinedBlueCAP  = { "USAF F-16C", 
 					 "USAF F/A-18C", 
 					 "USAF F-15C", 
-					 "USAF F-14B", 
+					 "USAF F-14B",
+					 "USN F-14A",
 					 "UAEAF M-2000C", 
 					 "UAEAF F-16C" }
 
