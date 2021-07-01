@@ -3880,13 +3880,17 @@ function SEF_RadioMenuSetup()
 	--////Snowfox Mission Options
 	SnowfoxOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Options", nil)
 	SnowfoxCAPOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox CAP Options", SnowfoxOptions)
-  SnowfoxSNDOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Sound Options", SnowfoxOptions)
+  --SnowfoxSNDOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Snowfox Sound Options", SnowfoxOptions)
 	SnowfoxBLUECAPToggle = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Allied AI CAP Flights", SnowfoxCAPOptions, function() SEF_BLUESQUADRONSTOGGLE() end, nil)
 	--SnowfoxInterceptTraining = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Snowfox Spawn Intercept Training", SnowfoxOptions, function() SEF_INTERCEPT_TRAINING() end, nil)
 	--SnowfoxInterceptRandom = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Snowfox Spawn Random Intercept", SnowfoxOptions, function() SEF_INTERCEPT_RANDOM() end, nil)
-	SnowfoxToggleCustomSounds = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Custom Sounds", SnowfoxSNDOptions, function() SEF_ToggleCustomSounds() end, nil)	
+	--SnowfoxToggleCustomSounds = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Toggle Custom Sounds", SnowfoxSNDOptions, function() SEF_ToggleCustomSounds() end, nil)	
 	SnowfoxClearCarrierFighters  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Clear Carrier Deck Of Fighters", SnowfoxOptions, function() SEF_ClearAIFightersFromCarrierDeck() end, nil)
-	SnowfoxClearCarrierTankers  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Clear Carrier Deck Of Tankers", SnowfoxOptions, function() SEF_ClearAITankersFromCarrierDeck() end, nil)
+	--SnowfoxClearCarrierTankers  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Clear Carrier Deck Of Tankers", SnowfoxOptions, function() SEF_ClearAITankersFromCarrierDeck() end, nil)
+  AdminOptions = missionCommands.addSubMenuForCoalition(coalition.side.BLUE, "Admin Options", SnowfoxOptions)
+  RemoveBlueBaseCAP  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Remove BLUE BASECAP", AdminOptions, function() SEF_BASECAP_REMOVE () end, nil)
+  RespawnBlueBaseCAP  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Respawn BLUE BASECAP", AdminOptions, function() SEF_BASECAP_RESPAWN () end, nil)
+  --RemoveEjectUnits  = missionCommands.addCommandForCoalition(coalition.side.BLUE, "Remove Ejected Static Units", AdminOptions, function() SEF_EJECT_REMOVE () end, nil)
 
 	
 	--////CAP Support Sector List
@@ -4180,6 +4184,7 @@ function SEF_USAFAWACS_SPAWN()
 		USAFAWACS = SPAWN
 			:New( "USAF AWACS" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(282.025)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					USAFAWACSGROUPNAME = SpawnGroup.GroupName
@@ -4192,6 +4197,7 @@ function SEF_USAFAWACS_SPAWN()
 		USAFAWACS = SPAWN
 			:New( "USAF AWACS P3" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(282.025)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					USAFAWACSGROUPNAME = SpawnGroup.GroupName
@@ -4204,6 +4210,7 @@ function SEF_USAFAWACS_SPAWN()
     USAFAWACS = SPAWN
     :New( "USAF AWACS P5" )
     :InitKeepUnitNames(true)
+    :InitRadioFrequency(282.025)
     :OnSpawnGroup(
       function( SpawnGroup )                
         USAFAWACSGROUPNAME = SpawnGroup.GroupName
@@ -4236,6 +4243,7 @@ function SEF_TEXACO_SPAWN()
 		TEXACO = SPAWN
 			:New( "22nd ARW Texaco" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(317.775)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					TEXACOGROUPNAME = SpawnGroup.GroupName
@@ -4249,6 +4257,7 @@ function SEF_TEXACO_SPAWN()
 		TEXACO = SPAWN
 			:New( "22nd ARW Texaco P3" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(317.775)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					TEXACOGROUPNAME = SpawnGroup.GroupName
@@ -4261,6 +4270,7 @@ function SEF_TEXACO_SPAWN()
     TEXACO = SPAWN
     :New( "22nd ARW Texaco P5" )
     :InitKeepUnitNames(true)
+    :InitRadioFrequency(317.775)
     :OnSpawnGroup(
       function( SpawnGroup )                
         TEXACOGROUPNAME = SpawnGroup.GroupName
@@ -4293,6 +4303,7 @@ function SEF_SHELL_SPAWN()
 		SHELL = SPAWN
 			:New( "22nd ARW Shell" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(317.650)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					SHELLGROUPNAME = SpawnGroup.GroupName
@@ -4305,6 +4316,7 @@ function SEF_SHELL_SPAWN()
 		SHELL = SPAWN
 			:New( "22nd ARW Shell P3" )
 			:InitKeepUnitNames(true)
+			:InitRadioFrequency(317.650)
 			:OnSpawnGroup(
 				function( SpawnGroup )								
 					SHELLGROUPNAME = SpawnGroup.GroupName
@@ -4317,6 +4329,7 @@ function SEF_SHELL_SPAWN()
     SHELL = SPAWN
     :New( "22nd ARW Shell P5" )
     :InitKeepUnitNames(true)
+    :InitRadioFrequency(317.650)
     :OnSpawnGroup(
       function( SpawnGroup )                
         SHELLGROUPNAME = SpawnGroup.GroupName
@@ -4349,6 +4362,7 @@ function SEF_ARCO_SPAWN()
     ARCO = SPAWN
       :New( "22nd ARW ARCO" )
       :InitKeepUnitNames(true)
+      :InitRadioFrequency(276.100)
       :OnSpawnGroup(
         function( SpawnGroup )                
           ARCOGROUPNAME = SpawnGroup.GroupName
@@ -4361,6 +4375,7 @@ function SEF_ARCO_SPAWN()
     ARCO = SPAWN
       :New( "22nd ARW ARCO P3" )
       :InitKeepUnitNames(true)
+      :InitRadioFrequency(276.100)
       :OnSpawnGroup(
         function( SpawnGroup )                
           ARCOGROUPNAME = SpawnGroup.GroupName
@@ -4373,6 +4388,7 @@ function SEF_ARCO_SPAWN()
     ARCO = SPAWN
     :New( "22nd ARW ARCO P5" )
     :InitKeepUnitNames(true)
+    :InitRadioFrequency(276.100)
     :OnSpawnGroup(
       function( SpawnGroup )                
         ARCOGROUPNAME = SpawnGroup.GroupName

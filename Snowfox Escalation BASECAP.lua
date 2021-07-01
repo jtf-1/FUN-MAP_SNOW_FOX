@@ -77,6 +77,21 @@ function SEF_BASECAP_RESPAWN ()
   env.info("BASECAP Respawn Complete", false) 
   timer.scheduleFunction(SEF_BASECAP_RESPAWN, nil, timer.getTime() + 7200)
 end
+
+
+
+
+function SEF_EJECT_REMOVE ()
+  env.info("EJECT Remove Starting", false)
+  EjectUnits=SET_STATIC:New():FilterPrefixes("pilot_"):FilterActive(true):FilterOnce()  
+  local EjectUnitscount=EjectUnits:Count()
+    for i = 1, EjectUnitscount do
+      local grpObj = EjectUnits:GetRandom()
+      --env.info(grpObj:GetName())
+      grpObj:Destroy(true)
+      env.info("EJECT Respawn Complete", false) 
+       end    
+end
   
 timer.scheduleFunction(SEF_BASECAP_REMOVE, nil, timer.getTime() + 15)
 timer.scheduleFunction(SEF_BASECAP_RESPAWN, nil, timer.getTime() + 20)

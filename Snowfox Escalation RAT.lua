@@ -185,7 +185,7 @@ RedLgTransportRAT:SetTerminalType(AIRBASE.TerminalType.OpenBig)
 RedLgTransportRAT:ExcludedAirports({AIRBASE.PersianGulf.Al_Maktoum_Intl, AIRBASE.PersianGulf.Sir_Abu_Nuayr, AIRBASE.PersianGulf.Tunb_Kochak, AIRBASE.PersianGulf.Havadarya})
 RedLgTransportRAT:_Debug(false) --Turn debug on=true or off=false. No argument means on.
 RedLgTransportRAT:EnableATC(true)
-RedLgTransportRAT:ATC_Messages(true)
+--RedLgTransportRAT:ATC_Messages(true)
 RedLgTransportRAT:SetCoalition("sameonly") --"same"=own coalition+neutral (default), "sameonly"=own coalition only, "neutral"=all neutral airports. Default is "same", so aircraft will use airports of the coalition their spawn template has plus all neutral airports.
 RedLgTransportRAT:CheckOnRunway(true, 75, distance)
 RedLgTransportRAT:CheckOnTop(true, 2)
@@ -209,7 +209,7 @@ RedHelos:ExcludedAirports({AIRBASE.PersianGulf.Kerman_Airport, AIRBASE.PersianGu
 RedHelos:SetMaxDistance(190)
 RedHelos:_Debug(false) --Turn debug on=true or off=false. No argument means on.
 RedHelos:EnableATC(true)
-RedHelos:ATC_Messages(true)
+--RedHelos:ATC_Messages(true)
 RedHelos:CheckOnRunway(true, 75, distance)
 RedHelos:CheckOnTop(true, 2)
 RedHelos:ContinueJourney()
@@ -227,11 +227,11 @@ RedHelos:Spawn((17-(Phase*2))/2)
 local BlueHelos = RAT:New("RAT UH-60A", "Blue Helo") --yak1:RAT("RAT_YAK") will create a RAT object called "yak1". The template group in the mission editor must have the name "RAT_YAK".
 BlueHelos:InitRandomizeTemplate(BlueHeloTemplate)
 BlueHelos:SetTerminalType(AIRBASE.TerminalType.HelicopterUsable)
---BlueHelos:ExcludedAirports(AIRBASE.PersianGulf.Kerman_Airport, AIRBASE.PersianGulf.Shiraz_International_Airport)
+BlueHelos:ExcludedAirports("CVN-75 Truman", "CSG_CarrierGrp_Tarawa")
 BlueHelos:SetMaxDistance(190)
 BlueHelos:_Debug(false) --Turn debug on=true or off=false. No argument means on.
 BlueHelos:EnableATC(true)
-BlueHelos:ATC_Messages(true)
+--BlueHelos:ATC_Messages(true)
 BlueHelos:SetCoalition("sameonly") --"same"=own coalition+neutral (default), "sameonly"=own coalition only, "neutral"=all neutral airports. Default is "same", so aircraft will use airports of the coalition their spawn template has plus all neutral airports.
 BlueHelos:CheckOnRunway(true, 75, distance)
 BlueHelos:CheckOnTop(true, 2)
@@ -253,7 +253,7 @@ BlueLgTransportRAT:SetTerminalType(AIRBASE.TerminalType.OpenBig)
 BlueLgTransportRAT:ExcludedAirports({AIRBASE.PersianGulf.Al_Maktoum_Intl, AIRBASE.PersianGulf.Sir_Abu_Nuayr, AIRBASE.PersianGulf.Tunb_Kochak})
 BlueLgTransportRAT:_Debug(false) --Turn debug on=true or off=false. No argument means on.
 BlueLgTransportRAT:EnableATC(true)
-BlueLgTransportRAT:ATC_Messages(true)
+--BlueLgTransportRAT:ATC_Messages(true)
 BlueLgTransportRAT:SetCoalition("sameonly") --"same"=own coalition+neutral (default), "sameonly"=own coalition only, "neutral"=all neutral airports. Default is "same", so aircraft will use airports of the coalition their spawn template has plus all neutral airports.
 BlueLgTransportRAT:CheckOnRunway(true, 75, distance)
 BlueLgTransportRAT:CheckOnTop(true, 2)
